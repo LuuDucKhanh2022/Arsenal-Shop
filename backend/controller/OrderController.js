@@ -42,7 +42,8 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   if (!order) {
     return next(new ErrorHandler(404, "Order not found with this id"));
   }
-  if (order.user._id !== req.user._id && order.user.role !== "admin") {
+  if ((order.user._id !== req.user._id) && req.user.role !== "admin") {
+    console.log(order.user._id)
     return next(new ErrorHandler(404, "This order is not owned by you"));
   }
 
@@ -54,7 +55,6 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get all orders-user
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  console.log(req.user._id);
   const orders = await Order.find({ user: req.user._id });
   res.status(200).json({
     success: true,

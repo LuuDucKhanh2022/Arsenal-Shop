@@ -28,9 +28,9 @@ router.route("/password/reset/:token").put(resetPassword);
 
 router.route("/me").get(isAuthenticatedUser, getUserDetails);
 
-router.route("/me/update/password").put(isAuthenticatedUser, updatePassword);
+router.route("/me/password").put(isAuthenticatedUser, updatePassword);
 
-router.route("/me/update/profile").put(isAuthenticatedUser, updateProfile);
+router.route("/me/profile").put(isAuthenticatedUser, updateProfile);
 
 router
   .route("/admin/users")

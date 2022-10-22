@@ -33,6 +33,5 @@ module.exports = (err, req, res, next) => {
     res.status(err.statusCode).json({
         success: false,
         message: err.stack,
-        id:req.user._id
     });
 };

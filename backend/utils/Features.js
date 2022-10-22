@@ -12,16 +12,14 @@ class Features {
                 $options: "i"
             }
         }
-        :{
-
-        }
+        :{}
         this.query = this.query.find({...keyword});
         return this;
     }
    
     filter(){
         const queryCopy = { ...this.queryStr };
-        console.log(`queryCopy:${queryCopy.category}`)
+        
 
         // Removing some field for category
         const removeFields = ["keyword","page","limit"];
@@ -29,8 +27,6 @@ class Features {
         removeFields.forEach((key) => delete queryCopy[key]);
 
         this.query = this.query.find(queryCopy);
-        console.log(queryCopy)
-        console.log(`this: ${this}`)
         return this;
     }
 
