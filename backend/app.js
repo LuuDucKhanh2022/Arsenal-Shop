@@ -37,11 +37,12 @@ app.use("/api/v2", user);
 app.use("/api/v2", order);
 app.use("/api/v2", payment);
 
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
 
 // it's for errorHandeling
+app.use(ErrorHandler);
 module.exports = app;

@@ -6,13 +6,15 @@ process.on("uncaughtException", (err) => {
   console.log(`Error: ${err.message}`);
   console.log(`Shutting down the server for Handling uncaught Exception`);
 });
-const connectDatabase = require("./db/Database");
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
     path: "backend/config/.env",
   });
 }
+
+const connectDatabase = require("./db/Database");
+
 
 //connect database
 connectDatabase();
