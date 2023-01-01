@@ -6,7 +6,6 @@ import {
   clearErrors,
   getProductCategory,
   getProductDetails,
-  newReview,
 } from "../../actions/ProductActions";
 import Footer from "../../Footer";
 import MetaData from "../../more/Metadata";
@@ -56,18 +55,18 @@ const ProductDetails = ({ match, history }) => {
 
   // const { isAuthenticated } = useSelector((state) => state.user);
 
-  const reviewSubmitHandler = (e) => {
-    e.preventDefault();
-    const myForm = new FormData();
-    myForm.set("rating", rating);
-    myForm.set("comment", comment);
-    myForm.set("productId", match.params.id);
-    dispatch(newReview(myForm));
-    comment.length === 0
-      ? toast.error("Please fill the comment box")
-      : toast.success("Review done successfully reload for watch it");
-    dispatch({ type: NEW_REVIEW_RESET });
-  };
+  // const reviewSubmitHandler = (e) => {
+  //   e.preventDefault();
+  //   const myForm = new FormData();
+  //   myForm.set("rating", rating);
+  //   myForm.set("comment", comment);
+  //   myForm.set("productId", match.params.id);
+  //   dispatch(newReview(myForm));
+  //   comment.length === 0
+  //     ? toast.error("Please fill the comment box")
+  //     : toast.success("Review done successfully reload for watch it");
+  //   dispatch({ type: NEW_REVIEW_RESET });
+  // };
 
   useEffect(() => {
     if (error) {
