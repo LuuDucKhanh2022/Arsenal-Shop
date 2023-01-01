@@ -2,14 +2,14 @@
   "name": "arsenal-shop",
   "version": "1.0.0",
   "description": "",
-  "main": "./backend/index.js",
+  "main": "./index.js",
   "engines": {
     "node": "14.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./backend/index.js",
-    "dev": "nodemon ./backend/index.js",
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
     "build": "cd frontend && npm install && npm run build"
   },
   "author": "Luu Duc Khanh",
