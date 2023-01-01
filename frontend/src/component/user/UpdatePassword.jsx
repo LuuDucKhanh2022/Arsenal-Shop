@@ -1,19 +1,19 @@
 import React, { Fragment, useState, useEffect } from "react";
-import "./UpdatePassword.css";
 import Loading from "../../more/Loader";
 import { useDispatch, useSelector } from "react-redux";
-// import { useAlert } from "react-alert";
 import MetaData from "../../more/Metadata";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import LockIcon from "@material-ui/icons/Lock";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { clearErrors, updatePassword } from "../../actions/userAction";
 import { UPDATE_PASSWORD_RESET } from "../../constans/userContans";
+import { ToastContainer, toast } from "react-toastify";
+import Header from "../Home/Header";
+import "./UpdatePassword.css";
 
 const UpdatePassword = ({ history }) => {
 
 const dispatch = useDispatch();
-//   const alert = useAlert();
 
   const { error, isUpdated, loading } = useSelector((state) => state.profile);
 
@@ -35,18 +35,18 @@ const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
-      alert(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     if (isUpdated) {
-      alert("Profile Updated Successfully");
+      toast.success("Profile Updated Successfully");
       history.push("/me");
       dispatch({
         type: UPDATE_PASSWORD_RESET,
       });
     }
-  }, [dispatch, error, alert, history, isUpdated]);
+  }, [dispatch, error, history, isUpdated]);
 
   return (
     <>
@@ -55,9 +55,10 @@ const dispatch = useDispatch();
       ) : (
         <>
           <MetaData title="Change Password" />
+          <Header />
           <div className="updatePasswordContainer">
             <div className="updatePasswordBox">
-              <h2 className="updatePasswordHeading">Update Profile</h2>
+              <h2 className="updatePasswordHeading">Update Password</h2>
 
               <form
                 className="updatePasswordForm"
@@ -102,9 +103,19 @@ const dispatch = useDispatch();
               </form>
             </div>
           </div>
+          <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
         </>
       )}
-      {/* <BottomTab /> */}
     </>
   );
 };

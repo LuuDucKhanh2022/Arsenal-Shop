@@ -17,9 +17,7 @@ exports.createOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.create({
     shippingInfo,
     orderItems,
-    paymentInfo,
     itemsPrice,
-    taxPrice,
     shippingPrice,
     totalPrice,
     paidAt: Date.now(),
@@ -36,14 +34,12 @@ exports.createOrder = catchAsyncErrors(async (req, res, next) => {
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
-    "name email role"
+    "_id name email role"
   );
 
   if (!order) {
     return next(new ErrorHandler(404, "Order not found with this id"));
-  }
-  if ((order.user._id !== req.user._id) && req.user.role !== "admin") {
-    console.log(order.user._id)
+  } else if (!order.user._id.equals(req.user._id) && req.user.role === "user") {
     return next(new ErrorHandler(404, "This order is not owned by you"));
   }
 
@@ -65,17 +61,19 @@ exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
 // Get All orders ---Admin
 exports.getAllAdminOrders = catchAsyncErrors(async (req, res, next) => {
   const orders = await Order.find();
-
-  let totalAmount = 0;
-
-  orders.forEach((order) => {
-    totalAmount += order.totalPrice;
-  });
-
+  let totalAmount = 0,user = null;
+  if(orders.length > 0) {
+    orders.forEach((order) => {
+      totalAmount += order.totalPrice;
+    });
+    user = orders[0].user;
+  }
+ 
   res.status(200).json({
     success: true,
     totalAmount,
-    orders,
+    user,
+    orders
   });
 });
 
@@ -93,7 +91,7 @@ exports.updateOrderStatus = catchAsyncErrors(async (req, res, next) => {
 
   if (req.body.status === "Shipped") {
     order.orderItems.forEach(async (item) => {
-      await updateStock(item.productId, item.quantity);
+      await updateStock(item);
     });
   }
   order.orderStatus = req.body.status;
@@ -108,12 +106,22 @@ exports.updateOrderStatus = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-async function updateStock(id, quantity) {
-  const product = await Product.findById(id);
-
-  product.Stock -= quantity;
-
+async function updateStock(orderItem) {
+  const product = await Product.findById(orderItem.id);
+  if (orderItem.size === null){
+    product.stock -= orderItem.quantity;
+    
+  } else {
+    for(let i = 0; i < product.size.length; i++) {
+      if (product.size[i].name === orderItem.size) {
+        product.size[i].stock -= orderItem.quantity;
+        product.stock -=orderItem.quantity;
+        break;
+      }
+    }
+  }
   await product.save({ validateBeforeSave: false });
+  
 }
 
 // delete Order ---Admin

@@ -1,5 +1,6 @@
 import {
     ADD_TO_CART,
+    EMPTY_CART,
     REMOVE_CART_ITEM,
     SAVE_SHIPPING_INFO,
   } from "../constans/CartConstans";
@@ -13,14 +14,14 @@ import {
         const item = action.payload;
      
         const isItemExist = state.cartItems.find(
-          (i) => i.product === item.product
+          (i) => i.id === item.id && i.size === item.size
         );
 
         if (isItemExist) {
           return {
             ...state,
             cartItems: state.cartItems.map((i) =>
-              i.product === isItemExist.product ? item : i
+              i.id === isItemExist.id && i.size === isItemExist.size ? item : i
             ),
           };
         } else {
@@ -33,8 +34,15 @@ import {
       case REMOVE_CART_ITEM:
         return {
           ...state,
-          cartItems: state.cartItems.filter((i) => i.product !== action.payload),
+          cartItems: state.cartItems.filter((i) => { 
+            return i.id !== action.payload.id ||  (i.id === action.payload.id && i.size !== action.payload.size)}),
         };
+
+      case EMPTY_CART:
+        return {
+          ...state,
+          cartItems : []
+        }  
   
       case SAVE_SHIPPING_INFO:
         return {

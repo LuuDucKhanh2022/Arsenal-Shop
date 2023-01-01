@@ -46,7 +46,7 @@
     color: rgba(0, 0, 0, 0.623);
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .productReviewsContainer {
       border-left: none;
       border-top: 1px solid rgba(0, 0, 0, 0.158);

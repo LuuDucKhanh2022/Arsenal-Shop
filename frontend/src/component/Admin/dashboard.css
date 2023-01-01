@@ -1,17 +1,18 @@
 .dashboard {
     width: 100vw;
     max-width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 5fr;
+    display: flex;
     position: absolute;
   }
   
   .dashboardContainer {
+    flex: 1;
     border-left: 1px solid rgba(0, 0, 0, 0.13);
     background-color: rgb(255, 255, 255);
     padding: 1rem 0;
   }
   
+
   .dashboardContainer > h1 {
     color: rgba(0, 0, 0, 0.733);
     font: 300 2rem "Roboto";
@@ -20,7 +21,13 @@
     padding: 1.5rem;
     margin: auto;
   }
-  
+  .MuiDataGrid-root.MuiDataGrid-autoHeight {
+    overflow-x: auto;
+  }
+
+  .MuiDataGrid-root .MuiDataGrid-main {
+    min-width: 1168px;
+  }
   .dashboardSummary {
     margin: 2rem 0;
   }
@@ -76,7 +83,7 @@
     margin: auto;
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .dashboard {
       grid-template-columns: 1fr;
     }

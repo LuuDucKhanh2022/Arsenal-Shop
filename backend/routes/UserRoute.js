@@ -12,11 +12,17 @@ const {
   getSingleUser,
   updateUserRole,
   deleteUser,
+  confirmEmail,
+  resendLink,
 } = require("../controller/UserController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/registration").post(createUser);
+
+router.route("/confirmation/:email/:token").get(confirmEmail);
+
+router.route("/confirmation/resendlink").post(resendLink)
 
 router.route("/login").post(loginUser);
 
@@ -34,12 +40,12 @@ router.route("/me/profile").put(isAuthenticatedUser, updateProfile);
 
 router
   .route("/admin/users")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getAllUsers);
+  .get(isAuthenticatedUser, authorizeRoles("admin","root"), getAllUsers);
 
 router
   .route("/admin/user/:id")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getSingleUser)
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateUserRole)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteUser)
+  .get(isAuthenticatedUser, authorizeRoles("admin","root"), getSingleUser)
+  .put(isAuthenticatedUser, authorizeRoles("admin","root"), updateUserRole)
+  .delete(isAuthenticatedUser, authorizeRoles("admin","root"), deleteUser)
 
 module.exports = router;

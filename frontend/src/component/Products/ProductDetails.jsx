@@ -1,51 +1,71 @@
 import React, { useEffect, useState } from "react";
+import clsx from "clsx";
 import Carousel from "react-material-ui-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearErrors,
+  getProductCategory,
   getProductDetails,
   newReview,
 } from "../../actions/ProductActions";
 import Footer from "../../Footer";
 import MetaData from "../../more/Metadata";
 import Header from "../Home/Header";
-import "./Productdetails.css";
 import { Rating } from "@material-ui/lab";
 import { ToastContainer, toast } from "react-toastify";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import "react-toastify/dist/ReactToastify.css";
 import { addItemsToCart } from "../../actions/CartAction";
-import { addFavouriteItemsToCart } from "../../actions/FavouriteAction";
+import { addToFavourite } from "../../actions/FavouriteAction";
 import ReviewCard from "./ReviewCard.jsx";
 import { NEW_REVIEW_RESET } from "../../constans/ProductConstans";
-import BottomTab from "../../more/BottomTab";
 import Loading from "../../more/Loader";
+import Breadcrumbs from "../../more/Breadcrumbs";
+import styles from "./Productdetails.module.css";
+import ProductSection from "./ProductSection";
+import ReviewsTab from "./ReviewTab";
 
 const ProductDetails = ({ match, history }) => {
   const dispatch = useDispatch();
+  const [tab, setTab] = useState("");
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+  // Increase quantity
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState("");
+  const [available, setAvailable] = useState(0);
 
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+  const { productCategory, error: productCategoryError } = useSelector(
+    (state) => state.productCategory
+  );
 
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  useEffect(() => {
+    if (product.category !== undefined && productCategory.length > 0) {
+      const relatedProductList = productCategory.find(
+        (item) => item.category === product.category.name
+      );
+      setRelatedProducts(relatedProductList.products);
+    }
+  }, [product, productCategory]);
+
+  // const { isAuthenticated } = useSelector((state) => state.user);
 
   const reviewSubmitHandler = (e) => {
     e.preventDefault();
-
     const myForm = new FormData();
-
     myForm.set("rating", rating);
     myForm.set("comment", comment);
     myForm.set("productId", match.params.id);
-
-    isAuthenticated !== true ? history.push(`/login?redirect=/`) : <></>;
-
     dispatch(newReview(myForm));
-
     comment.length === 0
       ? toast.error("Please fill the comment box")
       : toast.success("Review done successfully reload for watch it");
-
     dispatch({ type: NEW_REVIEW_RESET });
   };
 
@@ -54,8 +74,13 @@ const ProductDetails = ({ match, history }) => {
       toast.error(error);
       dispatch(clearErrors());
     }
+    if (productCategoryError) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProductCategory());
     dispatch(getProductDetails(match.params.id));
-  }, [dispatch, match.params.id, error]);
+  }, [dispatch, match.params.id, error, match.path, productCategoryError]);
 
   const options = {
     value: product.ratings,
@@ -63,36 +88,90 @@ const ProductDetails = ({ match, history }) => {
     precision: 0.5,
   };
 
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-
-  // Increase quantity
-  const [quantity, setQuantity] = useState(1);
-
   const increaseQuantity = () => {
-    if (product.Stock <= quantity) return toast.error("Product stock limited");
+    if (product.size && product.size.length > 0) {
+      if (size !== "") {
+        const selectedSize = product.size.find((item) => item.name === size);
+        if (selectedSize.stock <= quantity)
+          return toast.error("Size stock limited");
+      } else {
+        return toast.error("Please choose a size");
+      }
+    } else {
+      if (product.stock <= quantity)
+        return toast.error("Product stock limited");
+    }
+
     const qty = quantity + 1;
     setQuantity(qty);
   };
 
   const decreaseQuantity = () => {
+    // if (size !== '') {
+
+    // }
     if (1 >= quantity) return;
     const qty = quantity - 1;
     setQuantity(qty);
   };
 
+  const chooseSize = (name) => {
+    const newSize = product.size.find((item) => item.name === name);
+    setAvailable(newSize.stock);
+    if (newSize.stock < quantity) {
+      setQuantity(newSize.stock);
+    }
+    setSize(name);
+  };
   const addToCartHandler = () => {
-    if (product.Stock > 0) {
-      dispatch(addItemsToCart(match.params.id, quantity));
-      toast.success("Product Added to cart");
+    if (product.size.length > 0) {
+      if (size !== "") {
+        const selectedSize = product.size.find((item) => item.name === size);
+        if (selectedSize.stock > 0) {
+          dispatch(addItemsToCart(match.params.id, quantity, selectedSize));
+          toast.success("Product Added to cart");
+        } else {
+          toast.error("Product stock limited");
+        }
+      } else {
+        toast.error("Please choose a size");
+      }
     } else {
-      toast.error("Product stock limited");
+      if (product.stock > 0) {
+        dispatch(addItemsToCart(match.params.id, quantity));
+        toast.success("Product Added to cart");
+      } else {
+        toast.error("Product stock limited");
+      }
     }
   };
 
   const addToFavouriteHandler = () => {
-    dispatch(addFavouriteItemsToCart(match.params.id, quantity));
+    dispatch(addToFavourite(match.params.id, quantity));
     toast.success("Product Added to Favourites");
+  };
+
+  const changeTab = (e, tabName) => {
+    var i, tabContent, tabTitle;
+    tabContent = document.getElementsByClassName(
+      "Productdetails_tabContent__oUVze"
+    );
+    for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].classList.remove("Productdetails_active__OJx1t");
+    }
+
+    tabTitle = document.getElementsByClassName(
+      "Productdetails_tabTitle__23-Ii"
+    );
+    for (i = 0; i < tabTitle.length; i++) {
+      tabTitle[i].classList.remove("Productdetails_active__OJx1t");
+    }
+
+    document
+      .getElementById(tabName)
+      .classList.add("Productdetails_active__OJx1t");
+    e.currentTarget.classList.add("Productdetails_active__OJx1t");
+    setTab(tabName);
   };
 
   return (
@@ -103,76 +182,109 @@ const ProductDetails = ({ match, history }) => {
         <>
           <MetaData title={`${product.name}`} />
           <Header />
-          <div className="ProductDetails">
-            <div className="first__varse">
+          <Breadcrumbs />
+          <div className={clsx(styles.productDetails)}>
+            <div className={clsx(styles.firstVarse)}>
               <Carousel>
                 {product.images &&
                   product.images.map((item, i) => (
-                    <img
-                      className="CarouselImage"
-                      key={i}
-                      src={item.url}
-                      alt={`${i} Slide`}
-                    />
+                    <div key={i} className={clsx(styles.carouselImage)}>
+                      <img key={i} src={item.url} alt={`${i} Slide`} />
+                    </div>
                   ))}
               </Carousel>
             </div>
-            <div className="varse__2">
-              <div className="detailsBlock-1">
+            <div className={clsx(styles.varse2)}>
+              <div className={clsx(styles.detailsBlock1)}>
                 <h2>{product.name}</h2>
               </div>
-              <div className="detailsBlock-2">
+              <div className={clsx(styles.detailsBlock2)}>
                 <Rating {...options} />
-                <span>({product.numOfReviews} Reviews)</span>
+                <span>
+                  ({product.numOfReviews && product.numOfReviews.total} Reviews)
+                </span>
               </div>
-              <div className="detailsBlock">
-                <div
-                  style={{
-                    display: "flex",
-                  }}
-                >
-                  <h1>{`$${product.price}`}</h1>
-                  <h1 className="discountPrice">
-                    {product.offerPrice > 0 ? `$${product.offerPrice}` : ""}
+              <>
+                {product.size && product.size.length > 0 ? (
+                  <div className={clsx(styles.sizeSection)}>
+                    <div className={clsx(styles.title)}>Choose size</div>
+                    <div className={clsx(styles.list)}>
+                      {product.size.map((sizeItem) => {
+                        let returnElement;
+                        // size.stoke !== 0
+                        //   ? (item = "item")
+                        //   : (item = "item--disable");
+                        // return <div className={item} onClick= {chooseSize}>{size.name}</div>;
+                        sizeItem.stock > 0
+                          ? (returnElement = (
+                              <div
+                                key={sizeItem.name}
+                                className={
+                                  sizeItem.name === size
+                                    ? clsx(styles.itemActive)
+                                    : clsx(styles.item)
+                                }
+                                onClick={() => chooseSize(sizeItem.name)}
+                              >
+                                {sizeItem.name}
+                              </div>
+                            ))
+                          : (returnElement = (
+                              <div className={clsx(styles.itemDisable)}>
+                                {sizeItem.name}
+                              </div>
+                            ));
+                        return returnElement;
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
+
+              <div className={clsx(styles.detailsBlock)}>
+                <div style={{}}>
+                  <h1>
+                    {quantity === 1
+                      ? `$${product.price}`
+                      : `$${product.price} x ${quantity} = $${
+                          product.price * quantity
+                        }`}
+                  </h1>
+                  <h1 className={clsx(styles.discountPrice)}>
+                    {product.offerPrice > 0 ? `$${product.offerPrice}` : <></>}
                   </h1>
                 </div>
-                <div className="detailsBlock-3-1">
-                  <span className="quantity">Quantity</span>
-                  <div className="detailsBlock-3-1-1">
+                <div className={clsx(styles.detailsBlock31)}>
+                  <span className={clsx(styles.quantity)}>Quantity</span>
+                  <div className={clsx(styles.detailsBlock311)}>
                     <button onClick={decreaseQuantity}>-</button>
                     <input type="number" readOnly value={quantity} />
                     <button onClick={increaseQuantity}>+</button>
-                  </div>{" "}
+                  </div>
+                  <span>
+                    {available !== 0
+                      ? `Available : ${available} products`
+                      : `Available : ${product.stock} products`}
+                  </span>
+                  <div></div>
                 </div>
-                <p className="stock__meta" style={{ paddingBottom: ".5vmax" }}>
-                  <b className={product.Stock < 1 ? "redColor" : "greenColor"}>
-                    {product.Stock < 1 ? "OutOfStock" : "InStock"}
-                  </b>
-                </p>
-                <div
-                  className="Description"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <span>Description:</span>
-                  <p>{product.description}</p>
+                <div className={clsx(styles.stockMeta)}>
+                  <span
+                    className={
+                      product.stock < 1
+                        ? clsx(styles.outOfStock)
+                        : clsx(styles.inStock)
+                    }
+                  >
+                    {product.stock < 1 ? "Out of stock" : "In Stock"}
+                  </span>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
+
+                <div className={clsx(styles.action)}>
                   <div
-                    className="wishlist"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      padding: "15px 5px",
-                    }}
+                    className={clsx(styles.addToWishList)}
                     onClick={addToFavouriteHandler}
                   >
                     <svg
@@ -185,176 +297,62 @@ const ProductDetails = ({ match, history }) => {
                     >
                       <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
                     </svg>
-                    <span
-                      className="cartBtn"
-                      style={{ opacity: 0.7, padding: "0px 5px" }}
-                    >
+                    <button className={clsx(styles.wishListBtn)}>
                       Add to wishlist
-                    </span>
+                    </button>
                   </div>
 
                   <div
-                    className="pointer flex"
-                    style={{
-                      padding: "10px 5px",
-                      alignItems: "center",
-                      backgroundColor: "#E4EAEC",
-                    }}
+                    className={
+                      product.stock < 1
+                        ? clsx(styles.addToCart, styles.disable)
+                        : clsx(styles.addToCart)
+                    }
                     onClick={addToCartHandler}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      className="bi bi-bag"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                    </svg>
-                    <button
-                      className="cartBtn"
-                      style={{
-                        opacity: 0.7,
-                        padding: "0px 5px",
-                        border: "none",
-                        cursor: "pointer",
-                        background: "none",
-                      }}
-                    >
-                      Add to Cart
-                    </button>
+                    <ShoppingCartIcon />
+                    <span className={clsx(styles.cartBtn)}>Add to Cart</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* Reviews */}
-          <div className="reviews__heading">
-            <h1
-              style={{
-                padding: "5px 30px",
-                opacity: 1,
-                borderBottom: "1px solid #999",
-                fontFamily: "Poppins,sans-serif",
-              }}
-            >
-              Reviews
-            </h1>
-          </div>
-          <div>
-            {/* Reviews */}
-            <div
-              style={{
-                padding: "1vmax",
-              }}
-            >
-              {product.reviews && product.reviews[0] ? (
-                <div className="review__option">
-                  {product.reviews &&
-                    product.reviews.map((review) => (
-                      <ReviewCard key= {review._id} review={review} />
-                    ))}
-                </div>
-              ) : (
-                <p
-                  className="noReviews"
-                  style={{
-                    fontFamily: "Poppins,sans-serif",
-                  }}
-                >
-                  No Reviews Yet *
-                </p>
-              )}
-              <div
-                style={{
-                  padding: "0px 2vmax",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+
+          {/* tab */}
+          <div className={clsx(styles.tab)}>
+            <div className={clsx(styles.tabHeading)}>
+              <span
+                onClick={(e) => changeTab(e, "reviewTab")}
+                className={clsx(styles.tabTitle, styles.active)}
               >
-                <span
-                  style={{
-                    fontSize: "1.8vmax",
-                    fontWeight: "700",
-                    lineHeight: 1,
-                    letterSpacing: "-.0125em",
-                    color: "#222",
-                    fontFamily: "Poppins,sans-serif",
-                  }}
-                >
-                  Add a Review
-                </span>
-                <div
-                  style={{
-                    margin: "1vmax 0",
-                    flexDirection: "column",
-                    display: "flex",
-                  }}
-                >
-                  <div>
-                    <span
-                      style={{
-                        color: "#222",
-                        fontFamily: "Poppins,sans-serif",
-                        padding: "1vmax 0",
-                      }}
-                    >
-                      Your Rating*
-                    </span>
-                    <Rating
-                      name="your rating"
-                      onChange={(e) => setRating(e.target.value)}
-                      value={rating}
-                      size="large"
-                    />
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-                <textarea
-                  cols="30"
-                  rows="6"
-                  placeholder="Comment *"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  style={{
-                    maxWidth: "100%",
-                    color: "#111",
-                    borderColor: "#e1e1e1",
-                    background: "#fff",
-                    borderRadius: "0.3rem",
-                    outline: "none",
-                    padding: "5px",
-                    fontSize: "1.2vmax",
-                    lineHeight: "1.5",
-                    resize: "none",
-                    display: "block",
-                  }}
-                ></textarea>
-                <button
-                  type="submit"
-                  style={{
-                    width: "12vmax",
-                    margin: "1vmax 0px",
-                    fontFamily: "sans-serif",
-                    padding: "10px 15px",
-                    background: "#3BB77E",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#fff",
-                  }}
-                  onClick={reviewSubmitHandler}
-                >
-                  Submit
-                </button>
-              </div>
+                Review
+              </span>
+              <span
+                onClick={(e) => changeTab(e, "descTab")}
+                className={clsx(styles.tabTitle)}
+              >
+                Description
+              </span>
+            </div>
+
+            <div
+              id="reviewTab"
+              className={clsx(styles.tabContent, styles.active)}
+            >
+              {JSON.stringify(product) !== "{}" && (
+                <ReviewsTab product={product} match={match} history={history} />
+              )}
+            </div>
+            <div id="descTab" className={clsx(styles.tabContent)}>
+              <div className={clsx(styles.desc)}>{product.description}</div>
             </div>
           </div>
+
+          {/* related product */}
+          <div className={clsx(styles.relatedProducts)}>
+            <ProductSection productCategory={relatedProducts} />
+          </div>
+
           <ToastContainer
             position="bottom-center"
             autoClose={5000}
@@ -367,7 +365,6 @@ const ProductDetails = ({ match, history }) => {
             pauseOnHover
           />
           <Footer />
-          <BottomTab />
         </>
       )}
     </>

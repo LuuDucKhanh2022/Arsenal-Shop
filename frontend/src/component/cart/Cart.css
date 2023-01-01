@@ -2,7 +2,6 @@
     margin: auto;
     text-align: center;
     padding: 10vmax;
-    height: 50vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,13 +9,13 @@
   }
   .emptyCart > svg {
     font-size: 5vmax;
-    color: #3BB77E;
+    color: var(--main-color);
   }
   .emptyCart > p {
     font-size: 2vmax;
   }
   .emptyCart > a {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
     color: white;
     border: none;
     padding: 1vmax 3vmax;
@@ -27,11 +26,11 @@
   }
   
   .cartPage {
-    padding: 5vmax;
+    padding: 2vmax 0;
   }
   
   .cartHeader {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
     width: 90%;
     box-sizing: border-box;
     margin: auto;
@@ -63,20 +62,20 @@
   
   .cartInput > button {
     border: none;
-    background-color: #3BB77E;
-    padding: 0.5vmax;
+    background-color: var(--main-color);
+    padding: 0.5vmax 1vmax;
     cursor: pointer;
     color: white;
     transition: all 0.5s;
   }
   .cartInput > button:hover {
-    background-color:#3BB77E;
+    background-color:var(--main-color);
   }
   
   .cartInput > input {
     border: none;
     padding: 0.5vmax;
-    width: 1vmax;
+    width: 3vmax;
     text-align: center;
     outline: none;
     font: 400 0.8vmax "Roboto";
@@ -100,7 +99,7 @@
   }
   
   .cartGrossProfitBox {
-    border-top: 3px solid #3BB77E;
+    border-top: 3px solid var(--main-color);
     margin: 1vmax 4vmax;
     box-sizing: border-box;
     padding: 2vmax 0;
@@ -114,7 +113,7 @@
     justify-content: flex-end;
   }
   .checkOutBtn > button {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
     color: white;
     border: none;
     padding: 0.8vmax 3vmax;
@@ -122,8 +121,8 @@
     margin: 1vmax 4vmax;
     cursor: pointer;
   }
-  
-  @media screen and (max-width: 600px) {
+
+  @media screen and (max-width: 767px) {
     .cartPage {
       padding: 0;
       min-height: 60vh;
@@ -149,8 +148,7 @@
     }
   
     .cartInput > input {
-      width: 2vmax;
-      padding: 1.5vmax;
+      width: 5vmax;
       font: 400 1.8vmax "Roboto";
     }
   

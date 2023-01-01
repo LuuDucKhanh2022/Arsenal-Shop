@@ -1,0 +1,133 @@
+.reviewTab {
+    padding: 1vmax;
+  }
+.header,.item {
+  display: flex;
+      justify-content: space-evenly;
+}
+.overview {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text{
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.number {
+  font-size: xx-large;
+    font-weight: bold;
+    color: #cb1c22;
+}
+
+.numOfReviews,.rating,.numOfRatings{
+  display: block;
+}
+
+.list {
+
+}
+
+.item {
+  align-items: center;
+}
+
+.rating {
+  line-height: 24px;
+}
+.starIcon {
+  padding: 4px;
+}
+.sort {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progressSuccess {
+  width: 200px;
+  height: 10px;
+  border-radius: 4px;
+  background: #edeeef;
+  position: relative;
+}
+
+.progressBar {
+  background: var(--toastify-color-success);
+  position:absolute;
+  height: inherit;
+}
+.sort select {
+  font-size: 16px;
+  padding: 8px 4px;
+}
+.reviewList {
+
+}
+
+.noReviews {
+    font-family: Poppins,sans-serif;
+    text-align: center;
+  }
+
+  .addReviewBox {
+    padding: 0px 2vmax;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .addReviewBox>span {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.0125em;
+    color: #222;
+    font-family: Poppins,sans-serif;
+  }
+  .addReviewBox textarea {
+    max-width: 100%;
+    color: #111;
+    background: #e1e1e1;
+    border-radius: 0.3rem;
+    outline: none;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: none;
+    display: block;
+  }
+  
+  .addReviewBox button {
+    width: 12vmax;
+    margin: 1vmax 0px;
+    font-family: sans-serif;
+    padding: 10px 15px;
+    background-color: var(--main-color);
+    border: none;
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .yourRating {
+    margin: 0.5vmax 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .yourRating>div>span:first-child {
+    color: #222;
+    font-family: Poppins,sans-serif;
+    padding:1vmax 0 ;
+  }
+
+  @media  (max-width:767px) {
+    .addReviewBox>span {
+      font-size:1.8vmax
+    }
+
+    .progressSuccess {
+      width: 140px;
+    }
+  }

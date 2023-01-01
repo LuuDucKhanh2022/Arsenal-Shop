@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import "./newProduct.css";
+import "./CreateProduct.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
@@ -10,13 +10,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
 import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
 import { DELETE_USER_RESET } from "../../constans/userContans";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 const AllUsers = ({ history }) => {
-
   const dispatch = useDispatch();
 
   const { error, users } = useSelector((state) => state.allUsers);
+  const { user, error: userError } = useSelector((state) => state.user);
 
   const {
     error: deleteError,
@@ -25,12 +25,34 @@ const AllUsers = ({ history }) => {
   } = useSelector((state) => state.profile);
 
   const deleteUserHandler = (id) => {
-    dispatch(deleteUser(id));
+    let userUpdateRole;
+    userUpdateRole = users.find((item) => item._id === id).role;
+    if (user.role === "admin" && (userUpdateRole === "admin" || userUpdateRole === "root")) {
+      toast.error("admin doesn't have this permission");
+    } else {
+      dispatch(deleteUser(id));
+    }
+    
+  };
+
+  const moveToUpdateUser = (id) => {
+    let userUpdateRole;
+    userUpdateRole = users.find((item) => item._id === id).role;
+    if (user.role === "admin" && (userUpdateRole === "admin" || userUpdateRole === "root")) {
+      toast.error("admin doesn't have this permission");
+    } else {
+      history.push(`/admin/user/${id}`);
+    }
   };
 
   useEffect(() => {
     if (error) {
       toast.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (userError) {
+      toast.error(userError);
       dispatch(clearErrors());
     }
 
@@ -46,21 +68,21 @@ const AllUsers = ({ history }) => {
     }
 
     dispatch(getAllUsers());
-  }, [dispatch, error, deleteError, history, isDeleted, message]);
+  }, [dispatch, error, deleteError, history, isDeleted, message, userError]);
 
   const columns = [
-    { field: "id", headerName: "User ID", minWidth: 180, flex: 0.8 },
+    { field: "id", headerName: "User ID", flex: 0.8 },
 
     {
       field: "email",
       headerName: "Email",
-      minWidth: 200,
+      // minWidth: 200,
       flex: 1,
     },
     {
       field: "name",
       headerName: "Name",
-      minWidth: 150,
+      // minWidth: 150,
       flex: 0.5,
     },
 
@@ -68,10 +90,10 @@ const AllUsers = ({ history }) => {
       field: "role",
       headerName: "Role",
       type: "number",
-      minWidth: 150,
+      // minWidth: 150,
       flex: 0.3,
       cellClassName: (params) => {
-        return params.getValue(params.id, "role") === ("admin")
+        return params.getValue(params.id, "role") === "admin"
           ? "greenColor"
           : "redColor";
       },
@@ -81,15 +103,17 @@ const AllUsers = ({ history }) => {
       field: "actions",
       flex: 0.3,
       headerName: "Actions",
-      minWidth: 150,
+      // minWidth: 150,
       type: "number",
       sortable: false,
       renderCell: (params) => {
         return (
           <Fragment>
-            <Link to={`/admin/user/${params.getValue(params.id, "id")}`}>
+            <Button
+              onClick={() => moveToUpdateUser(params.getValue(params.id, "id"))}
+            >
               <EditIcon />
-            </Link>
+            </Button>
 
             <Button
               onClick={() =>
@@ -129,13 +153,14 @@ const AllUsers = ({ history }) => {
             rows={rows}
             columns={columns}
             pageSize={10}
+            rowsPerPageOptions={[8,10]}
             disableSelectionOnClick
-            className="productListTable"
+            className="listTable"
             autoHeight
           />
         </div>
       </div>
-      <ToastContainer 
+      <ToastContainer
         position="bottom-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -145,7 +170,7 @@ const AllUsers = ({ history }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        />
+      />
     </Fragment>
   );
 };

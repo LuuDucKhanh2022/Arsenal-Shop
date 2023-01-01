@@ -4,7 +4,6 @@ import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import LibraryAddCheckIcon from "@material-ui/icons/LibraryAddCheck";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import "./CheckoutSteps.css";
-import BottomTab from "../../more/BottomTab";
 
 const CheckoutSteps = ({ activeStep }) => {
   const steps = [
@@ -37,7 +36,7 @@ const CheckoutSteps = ({ activeStep }) => {
           >
             <StepLabel
               style={{
-                color: activeStep >= index ? "#3BB77E" : "rgba(0, 0, 0, 0.649)",
+                color: activeStep >= index ? "var(--main-color)" : "rgba(0, 0, 0, 0.649)",
               }}
               icon={item.icon}
             >
@@ -46,7 +45,6 @@ const CheckoutSteps = ({ activeStep }) => {
           </Step>
         ))}
       </Stepper>
-      <BottomTab />
     </>
   );
 };

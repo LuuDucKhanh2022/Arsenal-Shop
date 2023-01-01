@@ -17,6 +17,7 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGOUT_FAIL,
+  LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   REGISTER_USER_FAIL,
   REGISTER_USER_REQUEST,
@@ -44,20 +45,31 @@ import {
 export const userReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-    case REGISTER_USER_REQUEST:
     case LOAD_USER_REQUEST:
+      case LOGOUT_REQUEST:
+      case REGISTER_USER_REQUEST:
       return {
         loading: true,
         isAuthenticated: false,
+        isRegisterSuccess:false
       };
+    // case REGISTER_USER_REQUEST:
+    //   return {...state,
+    //     loading :true}
     case LOGIN_SUCCESS:
-    case REGISTER_USER_SUCCESS:
     case LOAD_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         isAuthenticated: true,
         user: action.payload,
+      };
+
+    case REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        loading:false,
+        isRegisterSuccess:true
       };
 
     case LOGOUT_SUCCESS:
@@ -67,7 +79,7 @@ export const userReducer = (state = { user: {} }, action) => {
         isAuthenticated: false,
       };
     case LOGIN_FAIL:
-    case REGISTER_USER_FAIL:
+      case REGISTER_USER_FAIL:
       return {
         ...state,
         loading: false,
@@ -75,6 +87,12 @@ export const userReducer = (state = { user: {} }, action) => {
         user: null,
         error: action.payload,
       };
+
+      // case REGISTER_USER_FAIL:
+      //   return {
+      //     loading: false,
+      //     error: action.payload,
+      //   };
 
     case LOAD_USER_FAIL:
       return {
@@ -101,6 +119,7 @@ export const userReducer = (state = { user: {} }, action) => {
       return state;
   }
 };
+
 
 // Update User
 export const profileReducer = (state = {}, action) => {

@@ -46,7 +46,7 @@
   
   .paymentFormBtn {
     border: none;
-    background-color: #3BB77E;
+    background-color: var(--main-color);
     color: white;
     font: 300 0.9vmax "Roboto";
     width: 100%;
@@ -57,10 +57,10 @@
   }
   
   .paymentFormBtn:hover {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .paymentForm {
       width: 90%;
     }

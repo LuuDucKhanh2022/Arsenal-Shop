@@ -1,0 +1,64 @@
+.verifyEmail {
+    margin: auto;
+    text-align: center;
+    padding: 10vmax;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .verifyEmail > svg {
+    font-size: 7vmax;
+    color: var(--toastify-color-success);
+  }
+
+  .verifyEmail.fail > svg {
+    color: var(--main-color);
+  }
+  .verifyEmail > p {
+    font-size: 2vmax;
+  }
+  .verifyEmail a {
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    padding: 1vmax 3vmax;
+    cursor: pointer;
+    font: 400 1vmax "Roboto";
+    text-decoration: none;
+    margin: 2vmax;
+  }
+
+  .verifyEmail__bottom {
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+  }
+  .verifyEmail__bottom button{
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+
+  .verifyEmail__bottom button:first-child {
+    margin-right: 32px ;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .verifyEmail > a {
+      padding: 3vw 6vw;
+      font: 400 4vw "Roboto";
+      margin: 2vmax;
+    }
+  
+    .verifyEmail > svg {
+      font-size: 20vw;
+    }
+    .verifyEmail > p {
+      margin: 2vmax;
+      font-size: 5vw;
+    }
+  }

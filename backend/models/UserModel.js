@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please your Name"],
-    minlength: [3, "Please enter a name atleast 3 characters"],
-    maxlength: [24, "Name can not big than 15 characters"],
+    minlength: [5, "Please enter a name atleast 5 characters"],
+    maxlength: [24, "Name can not big than 24 characters"],
   },
   email: {
     type: String,
@@ -23,14 +23,29 @@ const userSchema = new mongoose.Schema({
     minlength: [8, "Password should be greater than 8 characters"],
     select: false,
   },
+  countryCode: {
+    type: String,
+    maxlength: [60, "Country can not be greater than 60 characters"],
+  },
+  stateCode: {
+    type: String,
+    maxlength: [60, "State can not be greater than 60 characters"],
+  },
+  address: {
+    type: String,
+    maxlength: [60, "address can not be greater than 60 chatecters"],
+  },
+  phoneNo: {
+    type: String,
+    maxlength: [11, "phone no can not be greater than 11 digits"],
+    minlength: [10, "phone no can not be less than 10 digits"],
+  },
   avatar: {
     public_id: {
       type: String,
-      required: true,
     },
     url: {
       type: String,
-      required: true,
     },
   },
   role: {
@@ -40,6 +55,10 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  isVerified: {
+    type:Boolean,
+    default: false
   },
   resetPasswordToken: String,
   resetPasswordTime: Date,
@@ -56,7 +75,7 @@ userSchema.pre("save", async function (next) {
 // jwt token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES
+    expiresIn: process.env.JWT_EXPIRES,
   });
 };
 

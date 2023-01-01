@@ -1,0 +1,30 @@
+.searchResult .title {
+    padding: 2vh 0 2vh 3vw;
+}
+.filterSort {
+    padding:30px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.filterSort>div {
+    display: flex;
+    justify-content: space-around;
+}
+.filterSort>div select:first-child{
+    margin-right: 16px;
+}
+.filterSort select {
+    width: 160px;
+    padding: 6px 8px ;
+    border: 1px solid silver;
+}
+
+@media screen and (max-width:767px) {
+    .searchResult .title {
+        font-size: 20px;
+    }
+    .filterSort>div:first-child {
+        margin-bottom: 16px;
+    }
+}

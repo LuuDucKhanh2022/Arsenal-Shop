@@ -5,15 +5,15 @@ const router = express.Router();
 router
     .route("/orders")
     .post(isAuthenticatedUser,createOrder)
-    .get(isAuthenticatedUser,authorizeRoles("admin"),getAllAdminOrders);
+    .get(isAuthenticatedUser,authorizeRoles("admin","root"),getAllAdminOrders);
 
 router.route("/orders/me").get(isAuthenticatedUser,getAllOrders);
 
 router
     .route("/orders/:id")
     .get(isAuthenticatedUser,getSingleOrder)
-    .put(isAuthenticatedUser,authorizeRoles("admin"),updateOrderStatus)
-    .delete(isAuthenticatedUser,authorizeRoles("admin"),deleteOrder);
+    .put(isAuthenticatedUser,authorizeRoles("admin","root"),updateOrderStatus)
+    .delete(isAuthenticatedUser,authorizeRoles("admin","root"),deleteOrder);
 
 
 module.exports = router;

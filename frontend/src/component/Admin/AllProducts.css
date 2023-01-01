@@ -1,57 +1,68 @@
+
 .productListContainer {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: rgb(255, 255, 255);
-    border-left: 1px solid rgba(0, 0, 0, 0.158);
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(255, 255, 255);
+  border-left: 1px solid rgba(0, 0, 0, 0.158);
+  display: flex;
+  flex-direction: column;
+}
+.productListContainer .addProduct {
+  display: flex;
+  align-items: center;
+  background-color: var(--toastify-color-info);
+  color: white;
+  padding: 4px 8px;
+  margin: 0 35px 16px auto;
+}
+.MuiDataGrid-columnHeader {
+  background: var(--main-color);
+}
+
+#productListHeading {
+  font: 400 2rem "Roboto";
+  padding: 0.5vmax;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.637);
+  transition: all 0.5s;
+  margin-top:16px ;
+  text-align: center;
+}
+
+.listTable {
+  background-color: white;
+  border: none !important;
+}
+
+.MuiDataGrid-root.product .MuiDataGrid-main{
+  min-width: 1400px;
+}
+.listTable div {
+  font: 300 1vmax "Roboto";
+  color: rgba(0, 0, 0, 0.678);
+  border: none !important;
+}
+
+.listTable a,
+.listTable button {
+  color: rgba(0, 0, 0, 0.527);
+  transition: all 0.5s;
+}
+
+.listTable a:hover {
+  color: tomato;
+}
+
+.listTable button:hover {
+  color: rgb(236, 30, 30);
+}
+
+.MuiDataGrid-columnHeader div {
+  color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width: 767px) {
+  .listTable div {
+    font: 300 4vw "Roboto";
   }
-  .MuiDataGrid-columnHeader{
-    background: #3BB77E;
-  }
-  
-  #productListHeading {
-    font: 400 2rem "Roboto";
-    padding: 0.5vmax;
-    box-sizing: border-box;
-    color: rgba(0, 0, 0, 0.637);
-    transition: all 0.5s;
-    margin: 2rem;
-    text-align: center;
-  }
-  
-  .productListTable {
-    background-color: white;
-    border: none !important;
-  }
-  
-  .productListTable div {
-    font: 300 1vmax "Roboto";
-    color: rgba(0, 0, 0, 0.678);
-    border: none !important;
-  }
-  
-  .productListTable a,
-  .productListTable button {
-    color: rgba(0, 0, 0, 0.527);
-    transition: all 0.5s;
-  }
-  
-  .productListTable a:hover {
-    color: tomato;
-  }
-  
-  .productListTable button:hover {
-    color: rgb(236, 30, 30);
-  }
-  
-  .MuiDataGrid-columnHeader div {
-    color: rgb(255, 255, 255);
-  }
-  
-  @media screen and (max-width: 600px) {
-    .productListTable div {
-      font: 300 4vw "Roboto";
-    }
-  }
+}

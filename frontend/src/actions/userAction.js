@@ -16,6 +16,7 @@ import {
   LOGIN_FAIL,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT_REQUEST,
   LOGOUT_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_USER_FAIL,
@@ -52,7 +53,15 @@ export const login = (email, password) => async (dispatch) => {
     );
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+
+    dispatch({ type: LOGIN_FAIL, payload: message });
   }
 };
 
@@ -67,40 +76,60 @@ export const register = (userData) => async (dispatch) => {
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: REGISTER_USER_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
 
-
 // Load User
-export const loadUser = () => async (dispatch) =>{
+export const loadUser = () => async (dispatch) => {
   try {
-      dispatch({type: LOAD_USER_REQUEST});
-           // eslint-disable-next-line
-      const config = { headers:{ "Content-Type": "application/json"} };
+    dispatch({ type: LOAD_USER_REQUEST });
+    // eslint-disable-next-line
+    const config = { headers: { "Content-Type": "application/json" } };
 
-      const {data} = await axios.get(
-          `/api/v2/me`);
-           
-     dispatch({type: LOAD_USER_SUCCESS, payload: data.user });
-  } catch (error) {  
-      dispatch({type: LOAD_USER_FAIL, payload: error.response.data.message});
+    const { data } = await axios.get(`/api/v2/me`);
+
+    dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
+  } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({ type: LOAD_USER_FAIL, payload: message });
   }
-}
-              
+};
+
 // Log out user
-export const logout = () => async (dispatch) =>{
-  try {        
+export const logout = () => async (dispatch) => {
+  try {
+    dispatch({ type:LOGOUT_REQUEST })
     await axios.get(`/api/v2/logout`);
-           
-    dispatch({type: LOGOUT_SUCCESS});
-  } catch (error) {  
-      dispatch({type: LOGOUT_FAIL, payload: error.response.data.message});
+
+    dispatch({ type: LOGOUT_SUCCESS });
+  } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({ type: LOGOUT_FAIL, payload: message });
   }
-}
+};
 
 // Update Profile
 export const updateProfile = (userData) => async (dispatch) => {
@@ -113,14 +142,21 @@ export const updateProfile = (userData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: UPDATE_PROFILE_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
 
-// Update Password 
+// Update Password
 export const updatePassword = (password) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
@@ -131,9 +167,16 @@ export const updatePassword = (password) => async (dispatch) => {
 
     dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: UPDATE_PASSWORD_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
@@ -146,10 +189,16 @@ export const getAllUsers = () => async (dispatch) => {
 
     dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
   } catch (error) {
-    dispatch({ type: ALL_USERS_FAIL, payload: error.response.data.message });
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({ type: ALL_USERS_FAIL, payload: message });
   }
 };
-
 
 // Forgot Password
 export const forgotPassword = (email) => async (dispatch) => {
@@ -162,13 +211,19 @@ export const forgotPassword = (email) => async (dispatch) => {
 
     dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: FORGOT_PASSWORD_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
-
 
 // Reset Password
 export const resetPassword = (token, passwords) => async (dispatch) => {
@@ -185,13 +240,19 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 
     dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data.success });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: RESET_PASSWORD_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
-
 
 // Delete User ----- Admin
 export const deleteUser = (id) => async (dispatch) => {
@@ -202,9 +263,16 @@ export const deleteUser = (id) => async (dispatch) => {
 
     dispatch({ type: DELETE_USER_SUCCESS, payload: data });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: DELETE_USER_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
@@ -217,7 +285,14 @@ export const getUserDetails = (id) => async (dispatch) => {
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message });
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({ type: USER_DETAILS_FAIL, payload: message });
   }
 };
 
@@ -237,17 +312,24 @@ export function updateUser(id, userData) {
 
       dispatch({ type: UPDATE_USER_SUCCESS, payload: data.success });
     } catch (error) {
+      let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
       dispatch({
         type: UPDATE_USER_FAIL,
-        payload: error.response.data.message,
+        payload: message,
       });
     }
   };
 }
 
 //   Clearing errors
-export const clearErrors= () => async (dispatch)=>{
+export const clearErrors = () => async (dispatch) => {
   dispatch({
-      type: CLEAR_ERRORS
-  })
-}
+    type: CLEAR_ERRORS,
+  });
+};

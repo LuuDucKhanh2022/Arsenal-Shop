@@ -1,0 +1,127 @@
+.searchPage {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  background: white url("https://cdn.wallpapersafari.com/42/9/196syQ.jpg")
+  no-repeat center;
+  background-size: cover;
+}
+
+.searchBox {
+  width: 50%;
+  height: 8%;
+  position: relative;
+  top: 10%;
+  overflow: visible;
+}
+.searchBox .searchIcon {
+  position: absolute;
+    right: 0;
+    height: 100%;
+    font-size: 6vh;
+    color: var(--main-color);
+    padding: 4px;
+}
+.searchBox > input[type="text"] {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
+  background-color: white;
+  color: rgba(0, 0, 0, 0.637);
+  padding: 1vmax 2vmax;
+  width: 100%;
+  outline: none;
+  border: 0px solid;
+  border-radius: 2px;
+  font: 300 16px cursive;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.searchResult {
+  position: absolute;
+  top: 105%;
+  width: 100%;
+  background-color: #fff;
+  display: none;
+}
+
+.searchBox > input[type="text"]:focus ~ .searchResult,.searchResult:hover {
+  display: block;
+} 
+
+.result {
+
+}
+
+.searchHistory {
+
+}
+
+.searchHistoryList {
+  padding-bottom:12px;
+}
+
+.searchHistoryItem {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.searchHistoryItem:hover {
+  background-color: #e7e4e4;
+}
+.title {
+  padding: 12px;
+    font-weight: bold;
+}
+
+.title > span {
+  color: var(--main-color);
+}
+.productList {
+  max-height: 70vh;
+  overflow: auto;
+}
+.productCard {
+  display: flex;
+    width: 100%;
+    padding: 8px 4px;
+    border-bottom: 0.5px solid silver;
+    color: #000;
+}
+
+.productCard:hover {
+  opacity: 0.7;
+}
+.productCard img {
+  height: 10vh;
+}
+
+.productCard p {
+  margin-top:4px;
+}
+.detail {
+  padding-left: 8px;
+}
+.price {
+  margin-top: 8px;
+}
+.price >span {
+  color: var(--main-color);
+}
+.notFound {
+  width: 100%;
+  max-height:50vh ;
+  object-fit: contain;
+}
+@media screen and (max-width: 767px) {
+  .searchBox {
+    top: 5%;
+    width: 95%;
+  }
+
+  .searchBox > input[type="text"] {
+    font: 300 2vmax cursive;
+  }
+}
+

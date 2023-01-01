@@ -7,7 +7,11 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   text-decoration: none;
+  list-style: none;
 }
+/* *::first-letter {
+  text-transform: uppercase;
+} */
 body{
   font-family: "Poppins,sans-serif";
 }
@@ -42,7 +46,7 @@ div {overflow: hidden;}
 h6{
   font-size: 15px;
 }
-.space__beetween{
+.space-between{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -62,25 +66,16 @@ h6{
 .red{
   color: red;
 }
-.pxz__20{
-  margin: 0px 15px;
-}
+
 .relative{
   position: relative;
   overflow: visible!important;
 }
-.rightOption.flex.align__items__center {
-  overflow: visible!important;
-}
-li{
-  padding: 0px 15px;
-  color: #000;
-  font-weight: 600;
-}
-.space__around{
+
+.space-around{
   justify-content: space-around;
 }
-.justify__content__center{
+.justify-content-center{
   justify-content: center;
 }
 .icon__color{
@@ -140,9 +135,7 @@ h3:hover{
 .cursive{
   font-family: cursive;
 }
-.Header {
-  border-bottom: 1px solid #1223;
-}
+
 .mobile {
   display: flex;
 }
@@ -158,29 +151,14 @@ label.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLab
   animation: none;
   border: none;
 }
-.navbar.flex.pz__10{
-  transition: .4s all;
-  overflow: visible!important;
-}
-.cart__items.flex.align__items__center {
-  overflow: visible!important;
-}
+
 .bottomOption > a > div {
   overflow: visible!important;
 }
 .Description p{
   text-align: start;
 }
-.navbar.flex.pz__10.active{
-  position: fixed;
-  background-color: #fff;
-  z-index: 100;
-  top: 0;
-  width: 100%;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 20%);
-  left: 0;
-  padding: 1.2vmax 0;
-}
+
 .dashboard{
   overflow: visible!important;
 }
@@ -204,8 +182,8 @@ label.MuiRating-label {
 .dasboard__mobile{
   display: none;
 }
-@media only screen and (max-width: 768px) {
-  .Header{
+@media only screen and (max-width: 767px) {
+  .header{
     display: none;
   }
   .dashboard{
@@ -217,23 +195,18 @@ label.MuiRating-label {
   .offerPriceBox{
     overflow: visible!important;
   }
-  .ProductDetails{
-    padding: 0px 1vmax!important;
-  }
+  
   .cartInput{
     overflow: visible!important;
   }
-  .FavouriteItemsCard>div{
-    overflow: visible!important;
-  }
-  .FavouriteItemsCard>div>a{
-    font-family: sans-serif!important;
-  }
+ 
   h1.discountPrice {
     font-size: 1.2vmax!important;
     color: #777!important;
     margin-left: 5%!important;
     font-weight: 600!important;
+  text-decoration: line-through;
+
   }
   h2.jhamela {
     display: none!important;
@@ -241,16 +214,7 @@ label.MuiRating-label {
   span.freeOne {
     display: none !important;
   }
-  .home__content > div > h2 {
-    display: none!important;
-  }
-  button.Home__button {
-    height: 7vmax!important;
-    width: 20vmax!important;
-  }
-  .ProductCard{
-    height: unset!important;
-  }
+
   .Toastify__toast-container{
     bottom:14%!important;
   }
@@ -260,13 +224,11 @@ label.MuiRating-label {
   .banner{
     background: transparent!important;
   }
-  img.bgImg{
-    height: 40vmax!important;
-  }
+
   .banner, .bgImg{
     height: unset!important;
   }
-  .Footer.flex.space__around.pz__15 {
+  .Footer.flex.space-around.pz__15 {
     flex-direction: column;
     align-items: center;
     margin-bottom: 8vmax;

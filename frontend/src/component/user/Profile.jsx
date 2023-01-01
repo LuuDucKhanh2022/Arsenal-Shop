@@ -6,7 +6,7 @@ import Header from "../Home/Header";
 import MetaData from "../../more/Metadata";
 import Loading from "../../more/Loader";
 import "./Profile.css";
-import BottomTab from "../../more/BottomTab";
+import Breadcrumbs from "../../more/Breadcrumbs";
 
 const Profile = ({history }) => {
 
@@ -23,6 +23,7 @@ useEffect(() => {
        {loading ? (<Loading />):(
         <>
         <Header />
+        <Breadcrumbs />
         <div>
             <MetaData title={`${user.name}'s profile`} />
             <div className="profileContainer">
@@ -69,7 +70,6 @@ useEffect(() => {
         </div>
         </div>
         <Footer />
-        <BottomTab />
         </>
        )}
        </>

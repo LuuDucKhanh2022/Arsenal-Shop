@@ -1,0 +1,196 @@
+* {
+  
+}
+.newProductContainer {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(221, 221, 221);
+    border-left: 1px solid rgba(0, 0, 0, 0.158);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  .newProductContainer h1 {
+    color: rgba(0, 0, 0, 0.733);
+    font: 300 2rem "Roboto";
+    text-align: center;
+  }
+  
+  .createProductForm {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 3vmax;
+    justify-content: space-evenly;
+    width: 80vw;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.267);
+  }
+  .createProductForm>div {
+    display: flex;
+    justify-content: left;
+    padding: 8px 0;
+    align-items: center;
+  } 
+  .createProductForm input[type=number] {
+    width: 60px;
+  }
+  .createProductForm>div span {
+    display: inline-block;
+    width: 104px;
+    max-width: 140px;
+  }
+  .createProductForm>div>div:last-child {
+    margin-left: 16px;
+  }
+  .createProductForm>div input,
+   .createProductForm select,
+    .createProductForm textarea {
+    padding: 4px;
+    font-size: 16px;
+    margin-left: 8px;
+  }
+
+  .sizeBox {
+    margin-left: 16px;
+    border: 1px solid silver;
+    padding: 4px 8px;
+  }
+
+  .sizeBox:first-child {
+    margin-left: 0;
+  }
+  .sizeForm input,.sizeForm button {
+    height: 30px;
+  }
+  .previewImages {
+    
+    flex-direction: column;
+  }
+
+  .previewImages__list {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .previewImages__item {
+    height: 220px;
+    width: 210px;
+    min-width: 210px;
+    margin: 8px;
+  }
+  .previewImages img {
+    width: 100%;
+  }
+  /* .createProductForm > div {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  } */
+  /* .createProductForm > div > input,
+  .createProductForm > div > select,
+  .createProductForm > div > textarea {
+    padding: 1vmax 4vmax;
+    text-align: start;
+    padding-right: 1vmax;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.267);
+    border-radius: 4px;
+    font: 300 0.9vmax cursive;
+    outline: none;
+  }
+  
+  .createProductForm > div > svg {
+    position: absolute;
+    transform: translateX(1vmax);
+    font-size: 1.6vmax;
+    color: rgba(0, 0, 0, 0.623);
+  }
+  
+  #createProductFormFile > input {
+    display: flex;
+    padding: 0%;
+  }
+  
+  #createProductFormFile > input::file-selector-button {
+    cursor: pointer;
+    width: 100%;
+    z-index: 1;
+    height: 5vh;
+    border: none;
+    margin: 0%;
+    font: 400 0.8vmax cursive;
+    transition: all 0.5s;
+    padding: 0 1vmax;
+    color: rgba(0, 0, 0, 0.623);
+    background-color: rgb(255, 255, 255);
+  }
+  
+  #createProductFormFile > input::file-selector-button:hover {
+    background-color: rgb(235, 235, 235);
+  }
+  
+  #createProductFormImage {
+    width: 100%;
+    overflow: auto;
+  }
+  
+  #createProductFormImage > img {
+    width: 3vmax;
+    margin: 0 0.5vmax;
+  }
+  #createProductBtn {
+    border: none;
+    background-color: #3BB77E;;
+    color: white;
+    font: 300 0.9vmax "Roboto";
+    width: 100%;
+    padding: 0.8vmax;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.219);
+  }
+  
+  #createProductBtn:hover {
+    background-color: #3BB77E;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .newProductContainer {
+      background-color: rgb(255, 255, 255);
+    }
+    .createProductForm {
+      padding: 5vmax;
+    }
+  
+    .createProductForm > div > input,
+    .createProductForm > div > select,
+    .createProductForm > div > textarea {
+      padding: 2.5vmax 5vmax;
+      font: 300 1.7vmax cursive;
+    }
+  
+    .createProductForm > div > svg {
+      font-size: 2.8vmax;
+    }
+  
+    #createProductFormFile > img {
+      width: 8vmax;
+      border-radius: 100%;
+    }
+  
+    #createProductFormFile > input::file-selector-button {
+      height: 7vh;
+      font: 400 1.8vmax cursive;
+    }
+  
+    #createProductBtn {
+      font: 300 1.9vmax "Roboto";
+      padding: 1.8vmax;
+    }
+  } */

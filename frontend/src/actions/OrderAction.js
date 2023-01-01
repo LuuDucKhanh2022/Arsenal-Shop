@@ -35,46 +35,65 @@ export const createOrder = (order) => async (dispatch) => {
 
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: CREATE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
 
-
 // My Orders
 export const myOrders = () => async (dispatch) => {
-    try {
-      dispatch({ type: MY_ORDERS_REQUEST });
-  
-      const { data } = await axios.get("/api/v2/orders/me");
-  
-      dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
-    } catch (error) {
-      dispatch({
-        type: MY_ORDERS_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+  try {
+    dispatch({ type: MY_ORDERS_REQUEST });
+
+    const { data } = await axios.get("/api/v2/orders/me");
+
+    dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
+  } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({
+      type: MY_ORDERS_FAIL,
+      payload: message,
+    });
+  }
+};
 
 // Get Order Details
 export const getOrderDetails = (id) => async (dispatch) => {
-    try {
-      dispatch({ type: ORDER_DETAILS_REQUEST });
-  
-      const { data } = await axios.get(`/api/v2/orders/${id}`);
-  
-      dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
-    } catch (error) {
-      dispatch({
-        type: ORDER_DETAILS_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+  try {
+    dispatch({ type: ORDER_DETAILS_REQUEST });
 
+    const { data } = await axios.get(`/api/v2/orders/${id}`);
+
+    dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
+  } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
+    dispatch({
+      type: ORDER_DETAILS_FAIL,
+      payload: message,
+    });
+  }
+};
 
 // All order  -----Admin
 export const getAllOrders = () => async (dispatch) => {
@@ -85,9 +104,16 @@ export const getAllOrders = () => async (dispatch) => {
 
     dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: ALL_ORDERS_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
@@ -102,17 +128,20 @@ export const updateOrder = (id, order) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.put(
-      `/api/v2/orders/${id}`,
-      order,
-      config
-    );
+    const { data } = await axios.put(`/api/v2/orders/${id}`, order, config);
 
     dispatch({ type: UPDATE_ORDER_SUCCESS, payload: data.success });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: UPDATE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
@@ -126,16 +155,20 @@ export const deleteOrder = (id) => async (dispatch) => {
 
     dispatch({ type: DELETE_ORDER_SUCCESS, payload: data.success });
   } catch (error) {
+    let message;
+    typeof error.response.data === "string"
+      ? (message = error.response.data.slice(
+          error.response.data.lastIndexOf("Error") + 6,
+          error.response.data.indexOf("<br>")
+        ))
+      : (message = error.response.data.message);
     dispatch({
       type: DELETE_ORDER_FAIL,
-      payload: error.response.data.message,
+      payload: message,
     });
   }
 };
 
-
-
- 
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });

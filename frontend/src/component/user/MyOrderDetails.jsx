@@ -1,27 +1,48 @@
 import React, { useEffect } from "react";
-import "./orderDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../../more/Metadata";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { getOrderDetails, clearErrors } from "../../actions/OrderAction";
+import { Country, State } from "country-state-city";
 import { useAlert } from "react-alert";
 import Loading from "../../more/Loader";
-import BottomTab from "../../more/BottomTab";
+import Header from "../Home/Header";
+import Footer from "../../Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "./MyOrderDetails.css";
+import Breadcrumbs from "../../more/Breadcrumbs";
+import { useState } from "react";
 
 const MyOrderDetails = ({ match }) => {
-  const { order, error, loading } = useSelector((state) => state.myOrderDetails);
+  const { order, error, loading } = useSelector(
+    (state) => state.myOrderDetails
+  );
+  const [address, setAddress] = useState();
+  useEffect(() => {
+    let state, country;
+    if (order && order.shippingInfo) {
+      country = Country.getAllCountries().find(
+        (item) => item.isoCode === order.shippingInfo.countryCode
+      ).name;
+      state = State.getStateByCodeAndCountry(
+        order.shippingInfo.stateCode,
+        order.shippingInfo.countryCode
+      ).name;
+      setAddress(`${order.shippingInfo.address}, ${state}, ${country}`);
+    }
+  }, [order]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
 
     dispatch(getOrderDetails(match.params.id));
-  }, [dispatch, alert, error, match.params.id]);
+  }, [dispatch, error, match.params.id]);
   return (
     <>
       {loading ? (
@@ -29,11 +50,11 @@ const MyOrderDetails = ({ match }) => {
       ) : (
         <>
           <MetaData title="Order Details" />
+          <Header />
+          <Breadcrumbs />
           <div className="orderDetailsPage">
+            <Typography component="h1">Order #{order && order._id}</Typography>
             <div className="orderDetailsContainer">
-              <Typography component="h1">
-                Order #{order && order._id}
-              </Typography>
               <Typography>Shipping Info</Typography>
               <div className="orderDetailsContainerBox">
                 <div>
@@ -49,8 +70,7 @@ const MyOrderDetails = ({ match }) => {
                 <div>
                   <p>Address:</p>
                   <span>
-                    {order.shippingInfo &&
-                      `${order.shippingInfo.address}, ${order.shippingInfo.state}`}
+                    {address}
                   </span>
                 </div>
               </div>
@@ -63,12 +83,13 @@ const MyOrderDetails = ({ match }) => {
                         ? "greenColor"
                         : "redColor"
                     }
-                  >                  
-                  </p>
-                  <p style={{
-                      color:"green"
-                  }}>
-                  PAID
+                  ></p>
+                  <p
+                    style={{
+                      color: "green",
+                    }}
+                  >
+                    PAID
                   </p>
                 </div>
 
@@ -97,13 +118,15 @@ const MyOrderDetails = ({ match }) => {
             <div className="orderDetailsCartItems">
               <Typography>Order Items:</Typography>
               <div className="orderDetailsCartItemsContainer">
-
                 {order.orderItems &&
                   order.orderItems.map((item) => (
                     <div key={item.Offer}>
                       <img src={item.image} alt="Product" />
                       <Link to={`/product/${item.Offer}`}>
                         {item.name}
+                        <div>
+                          {item.size !== null ? `Size: ${item.size}` : ""}
+                        </div>
                       </Link>{" "}
                       <span>
                         {item.quantity} X ${item.price} ={" "}
@@ -111,14 +134,23 @@ const MyOrderDetails = ({ match }) => {
                       </span>
                     </div>
                   ))}
-
-
               </div>
             </div>
           </div>
+          <Footer />
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </>
       )}
-      <BottomTab />
     </>
   );
 };

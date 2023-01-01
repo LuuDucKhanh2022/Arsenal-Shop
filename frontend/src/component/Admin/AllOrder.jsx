@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import "./newProduct.css";
+import "./CreateProduct.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
@@ -14,18 +14,23 @@ import {
   deleteOrder,
 } from "../../actions/OrderAction";
 import { DELETE_ORDER_RESET } from "../../constans/OrderConstans";
-import { ToastContainer, toast } from 'react-toastify';
-
+import { ToastContainer, toast } from "react-toastify";
 
 const AllOrder = ({ history }) => {
   const dispatch = useDispatch();
 
   const { error, orders } = useSelector((state) => state.AllOrders);
 
-  const { error: deleteError, isDeleted } = useSelector((state) => state.deleteOrder);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.deleteOrder
+  );
 
   const deleteOrderHandler = (id) => {
-    dispatch(deleteOrder(id));
+    if (
+      window.confirm("Are you sure you want to delete this order?") === true
+    ) {
+      dispatch(deleteOrder(id));
+    }
   };
 
   useEffect(() => {
@@ -37,25 +42,29 @@ const AllOrder = ({ history }) => {
     if (deleteError) {
       toast.error(deleteError);
       dispatch(clearErrors());
-    }
-
-    if (isDeleted) {
+    } else if (isDeleted) {
       toast.success("Order Deleted Successfully");
       history.push("/admin/orders");
       dispatch({ type: DELETE_ORDER_RESET });
     }
 
+    // if (isDeleted) {
+    //   toast.success("Order Deleted Successfully");
+    //   history.push("/admin/orders");
+    //   dispatch({ type: DELETE_ORDER_RESET });
+    // }
+
     dispatch(getAllOrders());
   }, [dispatch, error, deleteError, history, isDeleted]);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    { field: "id", headerName: "Order ID", flex: 0.2 },
 
     {
       field: "status",
       headerName: "Status",
-      minWidth: 150,
-      flex: 0.5,
+      // minWidth: 150,
+      flex: 0.2,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
@@ -66,23 +75,23 @@ const AllOrder = ({ history }) => {
       field: "itemsQty",
       headerName: "Items Qty",
       type: "number",
-      minWidth: 150,
-      flex: 0.4,
+      // minWidth: 150,
+      flex: 0.2,
     },
 
     {
       field: "amount",
       headerName: "Amount",
       type: "number",
-      minWidth: 270,
-      flex: 0.5,
+      // minWidth: 270,
+      flex: 0.2,
     },
 
     {
       field: "actions",
-      flex: 0.3,
+      flex: 0.2,
       headerName: "Actions",
-      minWidth: 150,
+      // minWidth: 150,
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -130,13 +139,14 @@ const AllOrder = ({ history }) => {
             rows={rows}
             columns={columns}
             pageSize={10}
+            rowsPerPageOptions={[8, 10]}
             disableSelectionOnClick
-            className="productListTable"
+            className="listTable"
             autoHeight
           />
         </div>
       </div>
-      <ToastContainer 
+      <ToastContainer
         position="bottom-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -146,7 +156,7 @@ const AllOrder = ({ history }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        />
+      />
     </Fragment>
   );
 };

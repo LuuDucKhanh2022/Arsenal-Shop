@@ -1,62 +1,104 @@
-import React from "react";
-import "./Cart.css";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import { addItemsToCart, removeItemsFromCart } from "../../actions/CartAction";
 import { Typography } from "@material-ui/core";
 import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 import { Link } from "react-router-dom";
 import CartItemCard from "./CartItemCard.js";
-import BottomTab from "../../more/BottomTab";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Header from "../Home/Header";
+import Footer from "../../Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./Cart.css";
+import Breadcrumbs from "../../more/Breadcrumbs";
 
 const Cart = ({ history }) => {
   const dispatch = useDispatch();
 
+  const { isAuthenticated } = useSelector((state) => state.user);
   const { cartItems } = useSelector((state) => state.cart);
+  const [cart, setCart] = useState([cartItems]);
 
-  let Price = cartItems.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
-  );
+  let Price = cart.reduce((acc, item) => acc + item.quantity * item.price, 0);
 
   let totalPrice = Price;
 
-  const increaseQuantity = (id, quantity, stock) => {
+  const increaseQuantity = (id, quantity, size, stock) => {
     const newQty = quantity + 1;
     if (stock <= quantity) {
       return toast.error("Product Stock Limited");
     }
-    dispatch(addItemsToCart(id, newQty));
+    if (size === null) {
+      dispatch(addItemsToCart(id, newQty));
+    } else {
+      const selectedSize = { name: size, stock };
+      dispatch(addItemsToCart(id, newQty, selectedSize));
+    }
   };
 
-  const decreaseQuantity = (id, quantity) => {
+  const decreaseQuantity = (id, quantity, size, stock) => {
     const newQty = quantity - 1;
     if (1 >= quantity) {
       return;
     }
-    dispatch(addItemsToCart(id, newQty));
+    if (size === null) {
+      dispatch(addItemsToCart(id, newQty));
+    } else {
+      const selectedSize = { name: size, stock };
+      dispatch(addItemsToCart(id, newQty, selectedSize));
+    }
   };
 
-  const deleteCartItems = (id) => {
-    dispatch(removeItemsFromCart(id));
+  const deleteCartItems = (id, size) => {
+    dispatch(removeItemsFromCart(id, size));
   };
 
   const checkoutHandler = () => {
-    history.push("/login?redirect=shipping");
+    // history.push("/login?redirect=shipping");
+
+    if (isAuthenticated) {
+      history.push("/shipping");
+    } else {
+      history.push("/login");
+    }
   };
+
+  useEffect(() => {
+    let cartList = cartItems;
+    cartList.forEach(async (item) => {
+      const { data } = await axios.get(`/api/v2/products/${item.id}`);
+      if (item.size !== null) {
+        for (let i = 0; i < data.product.size.length; i++) {
+          if (data.product.size[i].name === item.size) {
+            item.stock = data.product.size.stock;
+            break;
+          }
+        }
+      } else {
+        item.stock = data.product.stock;
+      }
+    });
+    setCart(cartList);
+    // dispatch(updateFavouriteStock(cartItems));
+  }, [cart, cartItems]);
 
   return (
     <>
-      {cartItems.length === 0 ? (
-        <div className="emptyCart">
-          <RemoveShoppingCartIcon />
-          <Typography>No Items In Cart</Typography>
-          <Link to="/products">View Products</Link>
-          <BottomTab />
-        </div>
+      {cart.length === 0 ? (
+        <>
+          <Header />
+          <div className="emptyCart">
+            <RemoveShoppingCartIcon />
+            <Typography>No Items In Cart</Typography>
+            <Link to="/products">View Products</Link>
+          </div>
+          <Footer />
+        </>
       ) : (
         <>
+          <Header />
+          <Breadcrumbs />
           <div className="cartPage">
             <div className="cartHeader">
               <p>Product</p>
@@ -64,14 +106,19 @@ const Cart = ({ history }) => {
               <p>Subtotal</p>
             </div>
 
-            {cartItems &&
-              cartItems.map((item) => (
-                <div className="cartContainer" key={item.product}>
+            {cart &&
+              cart.map((item) => (
+                <div className="cartContainer" key={`${item.id}${item.size}`}>
                   <CartItemCard item={item} deleteCartItems={deleteCartItems} />
                   <div className="cartInput">
                     <button
                       onClick={() =>
-                        decreaseQuantity(item.product, item.quantity)
+                        decreaseQuantity(
+                          item.id,
+                          item.quantity,
+                          item.size,
+                          item.stock
+                        )
                       }
                     >
                       -
@@ -80,8 +127,9 @@ const Cart = ({ history }) => {
                     <button
                       onClick={() =>
                         increaseQuantity(
-                          item.product,
+                          item.id,
                           item.quantity,
+                          item.size,
                           item.stock
                         )
                       }
@@ -107,6 +155,7 @@ const Cart = ({ history }) => {
               </div>
             </div>
           </div>
+          <Footer />
           <ToastContainer
             position="bottom-center"
             autoClose={5000}
@@ -118,7 +167,6 @@ const Cart = ({ history }) => {
             draggable
             pauseOnHover
           />
-          <BottomTab />
         </>
       )}
     </>

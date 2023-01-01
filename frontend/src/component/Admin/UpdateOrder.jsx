@@ -11,15 +11,33 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../more/Loader";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import { Country, State } from "country-state-city";
 import { Button } from "@material-ui/core";
 import { UPDATE_ORDER_RESET } from "../../constans/OrderConstans";
 import "./UpdateOrder.css";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
-
-const UpdateOrder = ({ history, match }) => {
-  const { order, error, loading } = useSelector((state) => state.myOrderDetails);
-  const { error: updateError, isUpdated } = useSelector((state) => state.deleteOrder);
+const UpdateOrder = ({ match }) => {
+  const { order, error, loading } = useSelector(
+    (state) => state.myOrderDetails
+  );
+  const { error: updateError, isUpdated } = useSelector(
+    (state) => state.deleteOrder
+  );
+  const [address, setAddress] = useState();
+  useEffect(() => {
+    let state, country;
+    if (order && order.shippingInfo) {
+      country = Country.getAllCountries().find(
+        (item) => item.isoCode === order.shippingInfo.countryCode
+      ).name;
+      state = State.getStateByCodeAndCountry(
+        order.shippingInfo.stateCode,
+        order.shippingInfo.countryCode
+      ).name;
+      setAddress(`${order.shippingInfo.address}, ${state}, ${country}`);
+    }
+  }, [order]);
 
   const updateOrderSubmitHandler = (e) => {
     e.preventDefault();
@@ -50,7 +68,7 @@ const UpdateOrder = ({ history, match }) => {
     }
 
     dispatch(getOrderDetails(match.params.id));
-  }, [dispatch, error, match.params.id, isUpdated, updateError]);
+  }, [dispatch, error, isUpdated, match.params.id, updateError]);
 
   return (
     <Fragment>
@@ -67,7 +85,7 @@ const UpdateOrder = ({ history, match }) => {
                 display: order.orderStatus === "Delivered" ? "block" : "grid",
               }}
             >
-              <div>
+              <div style={{ height: "100vh", overflow: "auto" }}>
                 <div className="confirmshippingArea">
                   <Typography>Shipping Info</Typography>
                   <div className="orderDetailsContainerBox">
@@ -84,8 +102,9 @@ const UpdateOrder = ({ history, match }) => {
                     <div>
                       <p>Address:</p>
                       <span>
-                        {order.shippingInfo &&
-                          `${order.shippingInfo.address}, ${order.shippingInfo.state}`}
+                        {address}
+                        {/* {order.shippingInfo &&
+                          `${order.shippingInfo.address}, ${order.shippingInfo.state}, ${order.shippingInfo.country}`} */}
                       </span>
                     </div>
                   </div>
@@ -93,9 +112,11 @@ const UpdateOrder = ({ history, match }) => {
                   <Typography>Payment</Typography>
                   <div className="orderDetailsContainerBox">
                     <div>
-                      <p style={{
-                          color:"green"
-                      }}>
+                      <p
+                        style={{
+                          color: "green",
+                        }}
+                      >
                         PAID
                       </p>
                     </div>
@@ -130,6 +151,9 @@ const UpdateOrder = ({ history, match }) => {
                           <img src={item.image} alt="Product" />
                           <Link to={`/product/${item.product}`}>
                             {item.name}
+                            <div>
+                              {item.size !== null ? `Size: ${item.size}` : ""}
+                            </div>
                           </Link>{" "}
                           <span>
                             {item.quantity} X ${item.price} ={" "}
@@ -155,7 +179,7 @@ const UpdateOrder = ({ history, match }) => {
                   <div>
                     <AccountTreeIcon />
                     <select onChange={(e) => setStatus(e.target.value)}>
-                      <option value="">Choose Category</option>
+                      <option value="">Choose status</option>
                       {order.orderStatus === "Processing" && (
                         <option value="Shipped">Shipped</option>
                       )}
@@ -181,7 +205,7 @@ const UpdateOrder = ({ history, match }) => {
           )}
         </div>
       </div>
-      <ToastContainer 
+      <ToastContainer
         position="bottom-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -191,7 +215,7 @@ const UpdateOrder = ({ history, match }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        />
+      />
     </Fragment>
   );
 };

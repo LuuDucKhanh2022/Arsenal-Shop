@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 const LoginSignup = ({ history, location }) => {
   const dispatch = useDispatch();
 
-  const { error, loading, isAuthenticated } = useSelector(
+  const { error, loading, isAuthenticated ,isRegisterSuccess} = useSelector(
     (state) => state.user
   );
 
@@ -25,9 +25,10 @@ const LoginSignup = ({ history, location }) => {
     name: "",
     email: "",
     password: "",
+    retypePassword: "",
   });
 
-  const { name, email, password } = user;
+  const { name, email, password, retypePassword } = user;
 
   const loginTab = useRef(null);
   const registerTab = useRef(null);
@@ -43,14 +44,21 @@ const LoginSignup = ({ history, location }) => {
 
   const registerSubmit = (e) => {
     e.preventDefault();
+    if(name.length < 5 || name.length > 24) {
+      toast.error("Name is between 5 and 24 characters!")
+    } else if ( password.length < 8) {
+      toast.error("Password should be greater than 8 characters!")
+    } else if ( retypePassword !== password ) {
+      toast.error("Password and re-type password does not match!");
 
-    const myForm = new FormData();
-
-    myForm.set("name", name);
-    myForm.set("email", email);
-    myForm.set("password", password);
-    myForm.set("avatar", avatar);
-    dispatch(register(myForm));
+    } else {
+      const myForm = new FormData();
+      myForm.set("name", name);
+      myForm.set("email", email);
+      myForm.set("password", password);
+      myForm.set("avatar", avatar);
+      dispatch(register(myForm));
+    }
   };
 
   const registerDataChange = (e) => {
@@ -79,9 +87,15 @@ const LoginSignup = ({ history, location }) => {
     }
 
     if (isAuthenticated) {
-      history.push(redirect);
+      if (history.location.state) {
+        history.push("/")
+      } else {
+        history.goBack();
+      }
+    } else if (isRegisterSuccess) {
+      toast.success("Please check your email to access the link verify email")
     }
-  }, [dispatch, error, history, isAuthenticated, redirect]);
+  }, [dispatch, error, history, isAuthenticated, isRegisterSuccess, redirect]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {
@@ -179,6 +193,17 @@ const LoginSignup = ({ history, location }) => {
                     required
                     name="password"
                     value={password}
+                    onChange={registerDataChange}
+                  />
+                </div>
+                <div className="signUpPassword">
+                  <LockOpenIcon />
+                  <input
+                    type="password"
+                    placeholder="Re-type Password"
+                    required
+                    name="retypePassword"
+                    value={retypePassword}
                     onChange={registerDataChange}
                   />
                 </div>

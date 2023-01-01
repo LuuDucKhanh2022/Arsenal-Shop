@@ -1,0 +1,50 @@
+ul.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 16px;
+}
+.page-item{
+    background-color: #fff;
+    display: flex;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: 1px solid silver;
+}
+.page-item:first-child{
+    border-radius: 5px 0 0 5px;
+} 
+.page-item:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+} 
+.page-link{
+    font: 300 0.7vmax "Roboto";
+    color: rgb(80,80,80);
+    transition: all 0.3s;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+}
+.page-item:hover{
+    background-color: tomato;
+}
+.page-item:hover .page-link{
+    color: rgb(37, 37, 37);
+}
+.pageItemActive,.page-item.active{
+    background-color: var(--main-color);
+}
+.pageLinkActive{
+    color: white;
+}
+li.category-link{
+    
+    font-family: Roboto;
+    cursor: pointer;
+    border-top: 1px solid #999;
+    padding: 10px 10px;
+}

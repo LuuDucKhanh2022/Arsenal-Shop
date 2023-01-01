@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="Footer flex space__around pz__15" style={{"borderTop":".3px solid rgba(21,21,21,0.5)"}}>
+    <div className="Footer flex space-around pz__15" style={{"borderTop":".3px solid var(--main-color)"}}>
       {/* Footer 1st part */}
       <div className="footer1st">
-        <img
+        {/* <img
           src="https://arsenaldirect.arsenal.com/medias/arsenal-crest.png?context=bWFzdGVyfGltYWdlc3wxOTM4NXxpbWFnZS9wbmd8aDRiL2hmNC85MDY1ODQxMDk4NzgyL2Fyc2VuYWwtY3Jlc3QucG5nfGY0YTFjOTBjN2NiNmFkMmNkYTg1YTY5YzA0NzM5NWI0ZjgyZTA5MjFkYzE0ZDZlZmJlNjkyYTU1NzQwMjZlYjg"
           style={{ cursor: "pointer" }}
           alt ="Shop's Logo"
-        />
+        /> */}
         <div className="location flex py__10">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ const Footer = () => {
             <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
           </svg>
           <strong>Address:</strong>
-          <h6>7400 Jashore Sadar,Bangladesh</h6>
+          <h6>1 Đ.Lê Đức Thọ,Mỹ Đình,Nam Từ Liêm,Hà Nội,Việt Nam</h6>
         </div>
 
         <div className="location flex py__10">
@@ -99,7 +99,6 @@ const Footer = () => {
         <div className="footer__2nd__part">
              <h5>Account</h5>
              <Link to="/login"><h3>Log In</h3></Link>
-             <Link to="/login"><h3>Sign In</h3></Link>
              <Link to="/login"><h3>Registration</h3></Link>
              <Link to="/password/forgot"><h3>Forgot Password</h3></Link>
         </div>
@@ -113,10 +112,9 @@ const Footer = () => {
       {/* Footer 4th part */}
        <div className="footer__3rd__part">
             <h5>Buiseness</h5>
-             <Link to="/creator"><h3>Create A Seller Account</h3></Link>
-             <Link to="/creator"><h3>Seller Rules</h3></Link>
              <Link to="/Products"><h3>View Shop</h3></Link>
              <Link to="/support"><h3>Report us</h3></Link>
+            <Link to="/creator"><h3>Live Chat</h3></Link>
        </div>
       {/* Footer 5th part */}
       <div className="footer__4th__part">
@@ -124,7 +122,6 @@ const Footer = () => {
       <Link to="/faq"><h3>FAQ</h3></Link>
       <Link to="/contact"><h3>contact us</h3></Link>
       <Link to="/about"><h3>About us</h3></Link>
-      <Link to="/creator"><h3>Live Chat</h3></Link>
         </div>
         </div>
     </div>

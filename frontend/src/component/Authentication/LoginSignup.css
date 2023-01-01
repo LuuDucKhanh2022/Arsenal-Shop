@@ -26,7 +26,7 @@
     box-shadow: 15px 15px 15px rgba(219, 213, 213, 0.2), 
     -15px 15px 15px rgba(0,0,0,0.1);
     border-radius: 10px;
-    background: none;
+    background-color: white;
   }
   .login_signUp_toggle {
     display: flex;
@@ -42,11 +42,11 @@
     width: 100%;
   }
   .login_signUp_toggle > p:hover {
-    color: #7B02EA;
+    color: var(--main-color);
   }
   
   .LoginSignUpBox > div > button {
-    background-color: #7B02EA;
+    background-color: var(--main-color);
     height: 3px;
     width: 50%;
     border: none;
@@ -120,7 +120,7 @@
   #registerImage > input::file-selector-button {
     cursor: pointer;
     width: 100%;
-    z-index: 2;
+    z-index: 1;
     height: 5vh;
     border: none;
     margin: 0%;
@@ -138,7 +138,7 @@
   .loginBtn,
   .signUpBtn {
     border: none;
-    background-color: #7B02EA;
+    background-color: var(--main-color);
     color: white;
     font: 300 0.9vmax "Roboto";
     width: 100%;
@@ -152,11 +152,11 @@
   
   .loginBtn:hover,
   .signUpBtn:hover {
-    background-color: #7B02EA;
+    background-color: var(--main-color);
   }
   
   .shiftToLeft {
-    transform: translateX(-100%);
+    transform: translateX(-110%);
   }
   .shiftToNeutral {
     transform: translateX(0%);
@@ -170,7 +170,7 @@
     transform: translateX(100%);
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .LoginSignUpContainer {
       background-color: white;
     }
@@ -182,7 +182,7 @@
       height: 5vmax;
     }
     .login_signUp_toggle > p {
-      font: 300 1.5vmax "Roboto";
+      font: 300 2.5vmax "Roboto";
     }
   
     .loginForm,
@@ -220,4 +220,43 @@
       font: 300 1.9vmax "Roboto";
       padding: 1.8vmax;
     }
+  }
+
+  @media screen and (max-width:575px) {
+    .loginForm > div > input,
+  .signUpForm > div > input {
+    box-sizing: unset !important;
+  }
+
+  .LoginSignUpContainer {
+    position: sticky !important;
+  }
+
+  .LoginSignUpContainer {
+    background-image: none;
+    align-items: unset;
+  }
+  .login_signUp_toggle {
+    margin: 12px 0;
+  }
+  
+  .loginForm,
+  .signUpForm {
+    padding: 1vh;
+  }
+  .loginForm,
+  .signUpForm {
+    padding: 4vh;
+  }
+
+  .loginForm > div > input,
+  .signUpForm > div > input {
+    font-family: sans-serif;
+  }
+  .LoginSignUpBox {
+    margin: 0;
+    padding: 0;
+    height: 100vh !important;
+    border-radius: 0;
+  }
   }

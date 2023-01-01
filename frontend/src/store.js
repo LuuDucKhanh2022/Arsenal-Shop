@@ -2,10 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
-  deleteProductReducer,
+  updateProductReducer,
   deleteReviewReducer,
   newProductReducer,
   newReviewReducer,
+  productCategoryReducer,
   productDetailsReducer,
   productReviewsReducer,
   productsReducer,
@@ -20,10 +21,16 @@ import {
   orderDetailsReducer,
   orderReducer,
 } from "./reducers/OrderReducer";
-
+import { categoryReducer, newCategoryReducer,categoryDetailsReducer,updateCategoryReducer } from "./reducers/CategoryReducer";
+import { subCategoryReducer, newSubCategoryReducer,subCategoryDetailsReducer,updateSubCategoryReducer } from "./reducers/SubCategoryReducer";
 const reducer = combineReducers({
   products: productsReducer,
+  productCategory: productCategoryReducer,
   productDetails: productDetailsReducer,
+  categoryDetails: categoryDetailsReducer,
+  subCategoryDetails: subCategoryDetailsReducer,
+  categories: categoryReducer,
+  subCategories:subCategoryReducer,
   user: userReducer,
   profile: profileReducer,
   cart: cartReducer,
@@ -33,7 +40,11 @@ const reducer = combineReducers({
   myOrderDetails: orderDetailsReducer,
   newReview: newReviewReducer,
   createProduct: newProductReducer,
-  deleteProduct: deleteProductReducer,
+  updateProduct: updateProductReducer,
+  updateCategory:updateCategoryReducer,
+  updateSubCategory: updateSubCategoryReducer,
+  createCategory: newCategoryReducer,
+  createSubCategory: newSubCategoryReducer,
   AllOrders: allOrdersReducer,
   deleteOrder: orderReducer,
   allUsers: allUsersReducer,

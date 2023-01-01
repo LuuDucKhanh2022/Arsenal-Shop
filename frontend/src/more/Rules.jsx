@@ -1,15 +1,16 @@
 import React from 'react'
 import "./Rules.css";
 import Header from '../component/Home/Header';
-import BottomTab from './BottomTab';
 import MetaData from './Metadata';
 import Footer from '../Footer';
+import Breadcrumbs from './Breadcrumbs';
 
 const Rules = () => {
     return (
         <>
         <MetaData title="Rules" />
         <Header />
+        <Breadcrumbs />
         <div className='rules' style={{
             padding:"50px 30px",
             display:"flex",
@@ -32,7 +33,6 @@ const Rules = () => {
             </ul>
         </div>
         <Footer />
-        <BottomTab />
         </>
     )
 }

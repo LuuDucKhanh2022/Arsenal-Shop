@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ff0306;
+    margin-bottom: 16px;
+}
+
+.title {
+    background-color: var(--main-color);
+    color: white;
+    width: 240px;
+}
+.seeAll {
+    color: var(--main-color);
+}
+.seeAll,.title {
+    display: inline-block;
+    font-size: 24px;
+    padding: 4px 12px;
+    height: 36px;
+}

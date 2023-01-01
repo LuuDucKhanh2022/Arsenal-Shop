@@ -10,18 +10,18 @@ const orderSchema = new mongoose.Schema({
       type: String,
       // required: true,
     },
-    state: {
+    stateCode: {
       type: String,
       // required: true,
     },
-    country: {
+    countryCode: {
       type: String,
       // required: true,
     },
-    pinCode: {
-      type: Number,
-      // required: true,
-    },
+    // pinCode: {
+    //   type: Number,
+    //   // required: true,
+    // },
     phoneNo: {
       type: Number,
       // required: true,
@@ -29,11 +29,15 @@ const orderSchema = new mongoose.Schema({
   },
   orderItems: [
     {
-      productName: {
+      name: {
         type: String,
         required: true,
       },
-      productPrice: {
+      size: {
+        type: String,
+        require: true,
+      },
+      price: {
         type: Number,
         required: true,
       },
@@ -41,11 +45,11 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      productImage: {
+      image: {
         type: String,
         required: true,
       },
-      productId: {
+      id: {
         type: mongoose.Schema.ObjectId,
         ref: "Product",
         required: true,
@@ -60,11 +64,11 @@ const orderSchema = new mongoose.Schema({
   paymentInfo: {
     id: {
       type: String,
-      required: true,
+      // required: true,
     },
     status: {
       type: String,
-      required: true,
+      // required: true,
     },
   },
   paidAt: {

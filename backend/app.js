@@ -23,11 +23,15 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 //Route import
+const category =  require("./routes/CategoryRoute");
+const subCategory = require("./routes/SubCategoryRoute");
 const product = require("./routes/ProductRoute");
 const user = require("./routes/UserRoute");
 const order = require("./routes/OrderRoute");
 const payment = require("./routes/PaymentRoute");
 
+app.use("/api/v2", category);
+app.use("/api/v2", subCategory);
 app.use("/api/v2", product);
 app.use("/api/v2", user);
 app.use("/api/v2", order);

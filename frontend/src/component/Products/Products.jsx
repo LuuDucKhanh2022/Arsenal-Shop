@@ -1,172 +1,254 @@
-import React, { useEffect, useState } from "react";
+import clsx from "clsx";
+import React, { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Loading from "../../more/Loader";
 import Footer from "../../Footer";
 import Header from "../Home/Header";
-import { useSelector, useDispatch } from "react-redux";
-import Loading from "../../more/Loader";
-import ProductCard from "./ProductCard";
+import MetaData from "../../more/Metadata";
 import { clearErrors, getProduct } from "../../actions/ProductActions";
 import Pagination from "react-js-pagination";
-import "./Product.css";
-import Typography from"@material-ui/core/Typography"
+import ProductList from "./ProductList";
+import Breadcrumbs from "../../more/Breadcrumbs";
+import "./Products.css";
+import styles from "./Products.module.css";
 // import { useAlert } from "react-alert";
-import MetaData from "../../more/Metadata";
-import BottomTab from "../../more/BottomTab";
-import { ToastContainer, toast } from "react-toastify";
 
-const categories = [
-    "KIT",
-    "cloth",
-    "Ladies Cloth",
-    "Gift",
-    "Food",
-    "Electronics",
-    "Sports",
-    "Others"
-]
+function useQuery() {
+  const { search } = useLocation();
 
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 const Products = ({ match }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  
-  const [category,setCategory] = useState("");
+  const query = useQuery();
+  const param = useParams();
+  const { products, loading, error, productsCount, resultPerPage } =
+    useSelector((state) => state.products);
+  const { categories } = useSelector((state) => state.categories);
+  let subCategories = [];
+  if (categories.toString() !== [].toString()) {
+    if (param.category) {
+      let category = categories.filter(
+        (category) => category.name === param.category
+      );
+      subCategories = category[0].subCategories;
+    } else {
+      for (var i = 0; i < categories.length; i++) {
+        subCategories = subCategories.concat(categories[i].subCategories);
+      }
+    }
+  }
 
-  const {
-    products,
-    loading,
-    error,
-    productsCount,
-    resultPerPage,
-  } = useSelector((state) => state.products);
-
-  const keyword = match.params.keyword;
-
-  const setCurrentPageNo = (e) => {
-    setCurrentPage(e);
-  };
-
+  function handelFilter(e) {
+    let cateStr, perStr, sortStr, keyStr, pageStr, subCateStr;
+    if (query.get("keyword") == null) {
+      keyStr = "";
+    } else {
+      keyStr = `keyword=${query.get("keyword")}&`;
+    }
+    if (param.category) {
+      cateStr = `/${param.category}`;
+    } else {
+      cateStr = "";
+    }
+    if (param.subcategory) {
+      subCateStr = `/${param.subcategory}`;
+    } else {
+      subCateStr = "";
+    }
+    if (query.get("person") == null) {
+      perStr = "";
+    } else {
+      perStr = `person=${query.get("person")}&`;
+    }
+    if (query.get("sort") == null) {
+      sortStr = "";
+    } else {
+      sortStr = `sort=${query.get("sort")}&`;
+    }
+    if (query.get("page") == null) {
+      pageStr = "";
+    } else {
+      pageStr = `page=${query.get("page")}`;
+    }
+    if (e.target === undefined) {
+      `page=${e}` === "page=1" ? (pageStr = "") : (pageStr = `page=${e}`);
+    } else {
+      switch (e.target.name) {
+        case "category":
+          cateStr = `/${e.target.value}`;
+          subCateStr = "";
+          pageStr = "";
+          break;
+        case "subCategory":
+          subCateStr = `/${e.target.value}`;
+          const category = categories.find((category) =>
+            category.subCategories.find(
+              (subCategory) => subCategory.name === e.target.value
+            )
+          );
+          cateStr = `/${category.name}`;
+          pageStr = "";
+          break;
+        case "person":
+          e.target.value === ""
+            ? (perStr = "")
+            : (perStr = `person=${e.target.value}&`);
+          pageStr = "";
+          break;
+        case "sort":
+          sortStr = `sort=${e.target.value}&`;
+          pageStr = "";
+          break;
+        default:
+      }
+    }
+    history.push(
+      `/products${cateStr}${subCateStr}?${keyStr}${perStr}${sortStr}${pageStr}`
+    );
+  }
 
   useEffect(() => {
-      if(error){
-          toast.alert(error);
-          dispatch(clearErrors())
-      }
-    dispatch(getProduct(keyword, currentPage,category));
-  }, [dispatch, keyword, currentPage, category, error]); 
+    if (error) {
+      toast.alert(error);
+      dispatch(clearErrors());
+    }
+    let cateStr, perStr, sortStr, keyStr, pageStr, subCateStr;
+    if (query.get("keyword") == null) {
+      keyStr = "";
+    } else {
+      keyStr = `keyword=${query.get("keyword")}&`;
+    }
+    if (param.category) {
+      cateStr = `category=${param.category}&`;
+    } else {
+      cateStr = "";
+    }
+    if (param.subcategory) {
+      subCateStr = `subcategory=${param.subcategory}&`;
+    } else {
+      subCateStr = "";
+    }
+    if (query.get("person") == null) {
+      perStr = "";
+    } else {
+      perStr = `person=${query.get("person")}&`;
+    }
+    if (query.get("sort") == null) {
+      sortStr = "";
+    } else {
+      sortStr = `sort=${query.get("sort")}&`;
+    }
+    if (query.get("page") == null) {
+      pageStr = "";
+    } else {
+      pageStr = `page=${query.get("page")}`;
+    }
+    let link = `/api/v2/products?${keyStr}${cateStr}${subCateStr}${perStr}${sortStr}${pageStr}`;
 
-
+    dispatch(getProduct(link));
+  }, [dispatch, error, param.category, param.subcategory, query]);
 
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <>
-        <MetaData title="Products" />
+        <div>
+          <MetaData title="Products" />
           <Header />
-          <div>
-           {products.length === 0 ? 
-            ""
-            :
-            <h2
-            style={{
-              textAlign: "center",
-              borderBottom: "1px solid rgba(21,21,21,0.5)",
-              width: "20vmax",
-              fontSize: "1.4vmax",
-              fontFamily: "Poppins,sans-serif",
-              margin: "3vmax auto",
-              color: "rgb(0, 0, 0, 0.7)",
-            }}
-          >
-            Featured Products
-          </h2>
-           }
-            <div className="sidebar__product" style={{
-                display:"flex",
-                flex:1,
-            }}>
-                <div className="sidebar__products" style={{
-                  border: "1px solid #999",
-                  margin:"1vmax",
-                  flex:".177"
-              }}>
-                  <Typography style={{fontSize:"1.2vmax",padding:"5px"}}>CHOOSE CATEGORIES</Typography>
-                  <ul className="categoryBox">
-                      {categories.map((category) =>(
-                          <li
-                          className="category-link"
-                          key={category}
-                          onClick={() =>setCategory(category)}
-                          type="checkbox">
-                          {category}
-                          </li> 
-                      ))}
-                  </ul>
-                  <Typography style={{fontSize:"1.2vmax",padding:"5px"}}>QUICK LINKS</Typography>
-                  <li className="category-link">
-                      My Carts
-                  </li>
-                  <li className="category-link">
-                      Favourites Items
-                  </li>
-                  <li className="category-link">
-                      Go to Checkout
-                  </li>
+          <Breadcrumbs />
+          <div className={clsx(styles.mainContent)} style={{ width: "100vm" }}>
+            {query.get("keyword") !== null && (
+              <div className={clsx(styles.searchResult)}>
+                <h1 className={clsx(styles.title)}>{`Showing result for "${query.get("keyword")}"(${productsCount} products)`}</h1>
               </div>
+            )}
 
-             {products.length === 0 ?
-             <span style={{
-               display:"block",
-               padding:"30px 0",
-               fontSize:"1.5rem",
-               flex:".9",
-               textAlign:"center"
-             }}>No Product Found ....</span>
-             : 
-             <div
-             className="products"
-             style={{
-               display: "flex",
-               flexWrap: "wrap",
-               justifyContent: "center",
-               flex:".9"
-             }}
-           >
-             {products &&
-               products.map((product) => (
-                 <ProductCard key={product._id} product={product} />
-               ))}
-           </div>
-              }
-             
-             </div>
-            
-              <div
-                className="pagination__box"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "6vmax",
-                }}
-              >
-                <Pagination
-                  activePage={currentPage}
-                  itemsCountPerPage={resultPerPage}
-                  totalItemsCount={productsCount? productsCount : 0 }
-                  onChange={setCurrentPageNo}
-                  nextPageText="Next"
-                  prevPageText="Prev"
-                  firstPageText="First"
-                  lastPageText="Last"
-                  itemClass="page-item"
-                  linkClass="page-link"
-                  activeClass="pageItemActive"
-                  activeLinkClass="pageLinkActive"
-                />
+            <div className={clsx(styles.filterSort, "flex")}>
+              <div>
+                <select
+                  onChange={(e) => handelFilter(e)}
+                  name="category"
+                  id="category"
+                  value={param.category ? param.category : ""}
+                >
+                  <option value="">All Category</option>
+                  {categories &&
+                    categories.map((category) => (
+                      <option key={category._id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
+                </select>
+                <select
+                  onChange={(e) => handelFilter(e)}
+                  name="subCategory"
+                  id="subCategory"
+                  value={param.subcategory ? param.subcategory : ""}
+                >
+                  <option value="">All subcategory</option>
+                  {subCategories &&
+                    subCategories.map((subcategory) => (
+                      <option key={subcategory._id} value={subcategory.name}>
+                        {subcategory.name}
+                      </option>
+                    ))}
+                </select>
               </div>
+              <div>
+                <select
+                  name="person"
+                  id="category"
+                  value={query.get("person") ? query.get("person") : ""}
+                  onChange={handelFilter}
+                >
+                  <option value="">All subject</option>
+                  <option value="everyone">Everyone</option>
+                  <option value="men">Men</option>
+                  <option value="woman">Woman</option>
+                  <option value="kid">Kid</option>
+                </select>
+                <select
+                  name="sort"
+                  id=""
+                  value={query.get("sort") ? query.get("sort") : ""}
+                  onChange={(e) => handelFilter(e)}
+                >
+                  <option value="newest" className={clsx(styles.sortItem)}>
+                    Newsest
+                  </option>
+                  <option value="price_asc" className={clsx(styles.sortItem)}>
+                    Price(lowest first)
+                  </option>
+                  <option value="price_desc" className={clsx(styles.sortItem)}>
+                    Price(highest first)
+                  </option>
+                  <option value="ratings" className={clsx(styles.sortItem)}>
+                    Review Rating
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
+          <ProductList products={products} />
+          <Pagination
+            activePage={query.get("page") ? parseInt(query.get("page")) : 1}
+            itemsCountPerPage={resultPerPage}
+            totalItemsCount={productsCount ? productsCount : 0}
+            onChange={handelFilter}
+            nextPageText=">"
+            prevPageText="<"
+            firstPageText="First"
+            lastPageText="Last"
+            itemClass="page-item"
+            linkClass="page-link"
+            activeClass="pageItemActive"
+            activeLinkClass="pageLinkActive"
+          />
           <ToastContainer
             position="bottom-center"
             autoClose={5000}
@@ -179,8 +261,7 @@ const Products = ({ match }) => {
             pauseOnHover
           />
           <Footer />
-          <BottomTab />
-        </>
+        </div>
       )}
     </>
   );

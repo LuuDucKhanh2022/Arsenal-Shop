@@ -8,6 +8,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding-left: 8px;
 }
 .meta p {
   color: #7e7e7e;
@@ -27,15 +28,13 @@
   font-size: 14px;
   padding-right: 5px;
 }
-.row {
+/* .row {
   width: 100%;
   padding: 30px 0px;
   flex-wrap: wrap;
   justify-content: center;
-}
-.ProductDetails {
-  padding: 2vh !important;
-}
+} */
+
 .second {
   width: 100%;
   padding: 30px 0px;
@@ -44,7 +43,8 @@
   width: 100%;
   border-radius: 10px;
   object-fit: contain;
-  height: 70vh;
+  /* height: 70vh; */
+  margin: auto;
 }
 .about__page {
   padding: 30px 0px;
@@ -89,9 +89,7 @@
   font-size: 40px;
   line-height: 1.2;
 }
-.bottomOption {
-  display: none !important;
-}
+
 @media only screen and (max-width: 1110px) {
   .CarouselItem {
     width: 100%;
@@ -100,106 +98,30 @@
   .col__3 {
     width: 29%;
   }
-  li {
-    padding: 0px 9px;
-  }
   .col__2 {
     width: 50%;
   }
-  .inputBox > span {
-    font-size: 15px;
-  }
+
 }
 @media only screen and (max-width: 900px) {
-  .CartItemCard {
-    height: 32vh;
-  }
-  .page-item {
-    border-radius: 0 !important;
-    padding: 2vmax 2.5vmax;
-  }
-  .page-link {
-    font-size: 0.7rem;
-  }
-  .CartItemCard > div > a {
-    font-family: sans-serif !important;
-  }
-  .updateProfileForm > div > input {
-    font-family: sans-serif !important;
-  }
-  .searchBox {
-    width: 100vw !important;
-  }
-  span.cursive {
-    margin-top: -5% !important;
-    font-family: "Roboto";
-  }
+
   .Description p {
     padding-left: 5px;
     line-height: 1.5;
     font-weight: 400;
     font-size: 14px;
   }
-  .ProductDetails {
-    padding: unset !important;
-  }
-  .block__text {
-    animation: unset !important;
-    padding: 0px 5px;
-  }
-  .support__heading {
-    font-size: 2.5vmax;
-    line-height: 1.5;
-  }
-  .support {
-    background-image: unset !important;
-  }
-  .bottomOption {
-    display: flex !important;
-    width: 100%;
-    justify-content: space-around !important;
-    bottom: 0;
-    position: fixed;
-    background-color: #fff;
-  }
+  
   input#text {
     font-size: 1.5vmax;
   }
-  .nagadSwitch {
-    font-size: 2vmax !important;
-  }
-  .terms {
-    font-size: 1.5vmax !important;
-  }
-  form {
+
+  /* form {
     overflow: hidden !important;
     width: 80% !important;
-  }
-  .bg span {
-    font-size: 3.5vmax !important;
-  }
-  .MuiTypography-body1 {
-    font-size: 1.5vmax !important;
-  }
-  .nogod__inline {
-    margin: 5vmax 0;
-    margin-bottom: 10vmax;
-  }
-  .shippingBox {
-    padding-bottom: 15vmax;
-  }
-  .orderSummary {
-    padding-bottom: 15vmax;
-  }
-  .block__text {
-    font-size: 1.4vmax;
-  }
-  .nogod__image {
-    width: 100% !important;
-  }
-  .moreOption {
-    display: flex !important;
-  }
+  } */
+  
+
   .col__3 {
     width: 44%;
   }
@@ -209,113 +131,20 @@
   .Header {
     display: none !important;
   }
-  .speedDial {
-    top: 2%;
-  }
-  .sidebar__products {
-    display: none;
-  }
+  
   .products {
     flex: unset !important;
   }
   .MuiRating-decimal {
     font-size: 12px !important;
   }
-  .ProductCard > div > span {
-    width: 100%;
-  }
-  span.p__Price {
-    font-size: 13px;
-    padding: 0px 5px;
-  }
-  .ProductDetails {
-    flex-direction: column;
-  }
-  .ProductDetails > div:last-child {
-    align-items: center;
-  }
-  .detailsBlock-2 {
-    justify-content: center;
-    padding: 10px 0;
-  }
-  .detailsBlock > div {
-    justify-content: center;
-  }
-  p.stock__meta {
-    text-align: center;
-  }
+ 
   .about__page {
     padding: 0;
   }
-  .searchBox > input[type="text"] {
-    width: 50%;
-  }
 }
-@media only screen and (max-width: 560px) {
-  .loginForm > div > input,
-  .signUpForm > div > input {
-    box-sizing: unset !important;
-  }
-  .nogod__inline {
-    width: 80% !important;
-  }
-  .animation {
-    top: 14% !important;
-  }
-  .LoginSignUpContainer {
-    position: sticky !important;
-  }
-  .bkash__box {
-    margin-top: -45%;
-    z-index: 10;
-  }
-  .nogod__inline {
-    margin-top: 50% !important;
-  }
-  .bottomOption {
-    display: flex !important;
-    width: 100%;
-    justify-content: space-around !important;
-    background-color: #fff;
-  }
-  .bkash__box__inline {
-    width: 80% !important;
-  }
-  .LoginSignUpContainer {
-    background-image: none;
-    align-items: unset;
-  }
-  .login_signUp_toggle {
-    padding-top: 5%;
-  }
-  .nogod__inline {
-    margin-bottom: 15vmax;
-  }
-  .loginForm,
-  .signUpForm {
-    padding: 1vh;
-  }
-  .loginForm,
-  .signUpForm {
-    padding: 4vh;
-  }
-  .contact__main {
-    width: unset !important;
-  }
-  .rules {
-    width: unset !important;
-    padding: 5px !important;
-  }
-  .loginForm > div > input,
-  .signUpForm > div > input {
-    font-family: sans-serif;
-  }
-  .LoginSignUpBox {
-    margin: 0;
-    padding: 0;
-    height: 100vh !important;
-    border-radius: 0;
-  }
+@media only screen and (max-width: 575px) {
+    
   .col__3 {
     width: 80%;
   }
@@ -325,48 +154,5 @@
   .MuiSpeedDialAction-fab {
     margin: 4px 8px !important;
   }
-  .ProductCard > div > span {
-    width: 100%;
-  }
-  span.p__Price {
-    font-size: 12px;
-    padding: 0px 5px;
-  }
-  .cartBtn {
-    font-size: 12px !important;
-  }
-  .row {
-    padding: 10px 0;
-  }
-  .searchBox > input[type="text"] {
-    width: 80%;
-    height: 8% !important;
-    font-family: sans-serif !important;
-  }
-  svg.bi.bi-search.pointer {
-    right: 14% !important;
-  }
-  .favouritesButton {
-    width: 100px;
-    font-size: 9px;
-  }
-  .FavouriteItemsCard > div > span {
-    font-size: 10px;
-  }
-  .FavouriteItemsCard > div > p {
-    font-size: 10px;
-  }
-  .FavouriteItemsCard {
-    padding: 0vmax;
-    justify-content: space-between;
-  }
-}
-@media only screen and (max-width: 350px) {
-  .cartBtn {
-    font-size: 8px !important;
-  }
-  .bkash__box {
-    margin-top: -60%;
-    z-index: 10;
-  }
+
 }

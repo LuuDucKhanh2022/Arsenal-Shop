@@ -109,7 +109,7 @@
   }
   
   .orderSummary > button {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
     color: white;
     width: 100%;
     padding: 1vmax;
@@ -121,10 +121,10 @@
   }
   
   .orderSummary > button:hover {
-    background-color: #3BB77E;
+    background-color: var(--main-color);
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .confirmOrderPage {
       grid-template-columns: 1fr;
       height: unset;

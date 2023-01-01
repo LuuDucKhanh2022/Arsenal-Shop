@@ -27,14 +27,18 @@
   }
   
   .CartItemCard > div > p {
-    color: #3BB77E;
+    color: white;
+    background-color: var(--main-color);
     font: 100 0.8vmax "Roboto";
     cursor: pointer;
+    display: inline-block;
+    padding: 8px 0;
+    text-align: center;
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 767px) {
     .CartItemCard {
-      padding: 3vmax;
+      padding: 2vmax 0.5vmax;
       height: 25vmax;
     }
     .CartItemCard > img {
@@ -42,11 +46,11 @@
     }
   
     .CartItemCard > div {
-      margin: 1vmax 2vmax;
+      margin: 1vmax ;
     }
   
     .CartItemCard > div > a {
-      font: 300 2vmax cursive;
+      font: 300 2vmax sans-serif;
     }
   
     .CartItemCard > div > span {

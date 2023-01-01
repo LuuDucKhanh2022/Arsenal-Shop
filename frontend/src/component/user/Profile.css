@@ -11,10 +11,10 @@ img.profile__img {
     height: 150px;
     width: 150px;
     object-fit: cover;
-    border: 4px solid #2f6ddf;
+    border: 4px solid var(--main-color);
 }
 .edit__profile{
-    color: #0a8ef7;
+    color: var(--main-color);
     font-family: "Poppins";
     width: 100%;
     text-align: end;
