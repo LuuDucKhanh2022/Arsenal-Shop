@@ -148,13 +148,13 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
 
         // Send email 
 
+//         const message =
+//           `Hello ${req.body.name} \n Please veryfy your account by clicking the link: \n` +
+//           `http://localhost:3000/confirmation/${user.email}/${token.token}`;
+
         const message =
           `Hello ${req.body.name} \n Please veryfy your account by clicking the link: \n` +
-          `http://localhost:3000/confirmation/${user.email}/${token.token}`;
-
-        // const message =
-        //   `Hello ${req.body.name} \n Please veryfy your account by clicking the link: \n` +
-        //   `${req.protocol}://${req.get("host")}:3000/verify/${user.email}/${token.token}`;
+          `${req.protocol}://${req.get("host")}:3000/verify/${user.email}/${token.token}`;
 
         const mailOptions = {
           email: user.email,
@@ -257,12 +257,12 @@ exports.resendLink = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-  // const message =
-  //   `Hello ${user.name} \n Please veryfy your account by clicking the link: \n` +
-  //   `${req.protocol}://${req.get("host")}/confirmation/${user.email}/${token.token}`;
   const message =
     `Hello ${user.name} \n Please veryfy your account by clicking the link: \n` +
-    `http://localhost:3000/confirmation/${user.email}/${token.token}`;
+    `${req.protocol}://${req.get("host")}/confirmation/${user.email}/${token.token}`;
+//   const message =
+//     `Hello ${user.name} \n Please veryfy your account by clicking the link: \n` +
+//     `http://localhost:3000/confirmation/${user.email}/${token.token}`;
   const mailOptions = {
     email: user.email,
     subject: "Accout Verification Link",
