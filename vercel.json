@@ -3,7 +3,7 @@
   "name": "Arsenal-shop",
   "builds": [
     {
-      "src": "/backend/server.js",
+      "src": "./backend/index.js",
       "use": "@vercel/node"
     }
   ]
