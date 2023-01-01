@@ -3,7 +3,7 @@
   "name": "arsenal-shop",
   "builds": [
     {
-      "src":"./index.js",
+      "src":"./package.json",
       "use": "@vercel/node"
     }
   ],  
