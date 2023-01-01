@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "Arsenal-shop",
+  "name": "arsenal-shop",
   "routes": [
     {
       "src": "/(.*)",
