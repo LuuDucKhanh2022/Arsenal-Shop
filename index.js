@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-const connectDatabase = require("./db/Database");
+const connectDatabase = require("./backend/db/Database");
 
 
 //connect database
