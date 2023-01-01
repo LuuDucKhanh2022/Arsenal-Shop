@@ -3,15 +3,8 @@
   "name": "Arsenal-shop",
   "builds": [
     {
-      "src": "./backend/server.js",
+      "src": "/backend/server.js",
       "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    
-    {
-      "src": "/backend/(.*)",
-      "dest": "/"
     }
   ]
 }
