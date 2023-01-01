@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/index.js",
     "build": "cd frontend && npm install && npm run build",
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon backend/index.js"
   },
   "author": "Luu Duc Khanh",
   "license": "ISC",
