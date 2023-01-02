@@ -9,6 +9,7 @@ import "./VerifyEmail.css";
 import { Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { baseURL} from "../../api/baseURL";
 
 const VerifyEmail = () => {
   const history = useHistory();
@@ -19,7 +20,7 @@ const VerifyEmail = () => {
     const verifyEmail = async () => {
       try {
         const { data } = await axios.get(
-          `/api/v2/confirmation/${params.email}/${params.token}`
+          `${baseURL}/api/v2/confirmation/${params.email}/${params.token}`
         );
         setMessage(data.message);
       } catch (error) {
@@ -45,7 +46,7 @@ const VerifyEmail = () => {
         myForm.set("email", params.email);
         const config = { headers: { "Content-Type": "multipart/form-data" } };
         const { data } = await axios.post(
-          `/api/v2/confirmation/resendlink`,
+          `${baseURL}/api/v2/confirmation/resendlink`,
           myForm,
           config
         );

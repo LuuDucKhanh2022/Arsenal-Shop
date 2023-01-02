@@ -16,6 +16,7 @@ import "./Favourites.css";
 import Footer from "../../Footer";
 import Breadcrumbs from "../../more/Breadcrumbs";
 import { toast } from "react-toastify";
+import { baseURL } from "../../api/baseURL";
 
 
 const Favourite = ({ history }) => {
@@ -34,7 +35,7 @@ const Favourite = ({ history }) => {
   useEffect(() => {
     let favItemList = favouriteItems;
     favItemList.forEach(async (item) => {
-      const { data } = await axios.get(`/api/v2/products/${item.id}`);
+      const { data } = await axios.get(`${baseURL}/api/v2/products/${item.id}`);
       item.sizeList = data.product.size;
       item.stock = data.product.stock;
     });

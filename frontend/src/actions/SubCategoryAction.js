@@ -17,13 +17,14 @@ import {
   SUBCATEGORY_DETAILS_SUCCESS,
   SUBCATEGORY_DETAILS_FAIL,
 } from "../constans/SubCategoryConstans";
+import { baseURL} from "../api/baseURL";
 
 export const getAllSubCategories = () => async (dispatch) => {
   try {
     dispatch({
       type: ALL_SUBCATEGORY_REQUEST,
     });
-    const { data } = await axios.get("/api/v2/subcategories");
+    const { data } = await axios.get(`${baseURL}/api/v2/subcategories`);
 
     dispatch({
       type: ALL_SUBCATEGORY_SUCCESS,
@@ -49,7 +50,7 @@ export const getSubCategoryDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: SUBCATEGORY_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v2/subcategories/${id}`);
+    const { data } = await axios.get(`${baseURL}/api/v2/subcategories/${id}`);
 
     dispatch({
       type: SUBCATEGORY_DETAILS_SUCCESS,
@@ -79,7 +80,7 @@ export const updateSubCategory = (id, subCategoryData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `/api/v2/subcategories/${id}`,
+      `${baseURL}/api/v2/subcategories/${id}`,
       subCategoryData,
       config
     );
@@ -112,7 +113,7 @@ export const createSubCategory = (subCategoryData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/v2/subcategories`,
+      `${baseURL}/api/v2/subcategories`,
       subCategoryData,
       config
     );
@@ -140,7 +141,7 @@ export const stopBusinessSubCategory = (id) => async (dispatch) => {
   try {
     dispatch({ type: STOP_BUSINESS_SUBCATEGORY_REQUEST });
 
-    const { data } = await axios.put(`/api/v2/subcategories/${id}/state`);
+    const { data } = await axios.put(`${baseURL}/api/v2/subcategories/${id}/state`);
 
     dispatch({
       type: STOP_BUSINESS_SUBCATEGORY_SUCCESS,

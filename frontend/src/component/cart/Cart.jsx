@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Cart.css";
 import Breadcrumbs from "../../more/Breadcrumbs";
+import { baseURL } from "../../api/baseURL";
 
 const Cart = ({ history }) => {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ const Cart = ({ history }) => {
   useEffect(() => {
     let cartList = cartItems;
     cartList.forEach(async (item) => {
-      const { data } = await axios.get(`/api/v2/products/${item.id}`);
+      const { data } = await axios.get(`${baseURL}/api/v2/products/${item.id}`);
       if (item.size !== null) {
         for (let i = 0; i < data.product.size.length; i++) {
           if (data.product.size[i].name === item.size) {

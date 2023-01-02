@@ -55,7 +55,7 @@ import UpdateCategory from "./component/Admin/UpdateCategory";
 import AllSubCategories from "./component/Admin/AllSubCategories";
 import CreateSubCategory from "./component/Admin/CreateSubCategory";
 import UpdateSubCategory from "./component/Admin/UpdateSubCategory";
-import { getProductCategory } from "./actions/ProductActions";
+import { baseURL } from "./api/baseURL";
 import VerifyEmail from "./component/user/VerifyEmail";
 import ScrollToTop from "./more/ScrollToTop";
 
@@ -67,7 +67,7 @@ function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v2/stripeapikey");
+    const { data } = await axios.get(`${baseURL}/api/v2/stripeapikey`);
 
     setStripeApiKey(data.stripeApiKey);
   }

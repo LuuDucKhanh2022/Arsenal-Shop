@@ -17,12 +17,13 @@ import {
   CATEGORY_DETAILS_SUCCESS,
   CATEGORY_DETAILS_FAIL,
 } from "../constans/CategoryConstans";
+import { baseURL } from "../api/baseURL";
 export const getAllCategories = () => async (dispatch) => {
   try {
     dispatch({
       type: ALL_CATEGORY_REQUEST,
     });
-    const { data } = await axios.get("/api/v2/categories");
+    const { data } = await axios.get(`${baseURL}/api/v2/categories`);
 
     dispatch({
       type: ALL_CATEGORY_SUCCESS,
@@ -48,7 +49,7 @@ export const getCategoryDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: CATEGORY_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v2/categories/${id}`);
+    const { data } = await axios.get(`${baseURL}/api/v2/categories/${id}`);
 
     dispatch({
       type: CATEGORY_DETAILS_SUCCESS,
@@ -78,7 +79,7 @@ export const updateCategory = (id, categoryData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `/api/v2/categories/${id}`,
+      `${baseURL}/api/v2/categories/${id}`,
       categoryData,
       config
     );
@@ -111,7 +112,7 @@ export const createCategory = (categoryData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/v2/categories`,
+      `${baseURL}/api/v2/categories`,
       categoryData,
       config
     );
@@ -139,7 +140,7 @@ export const stopBusinessCategory = (id) => async (dispatch) => {
   try {
     dispatch({ type: STOP_BUSINESS_CATEGORY_REQUEST });
 
-    const { data } = await axios.put(`/api/v2/categories/${id}/state`);
+    const { data } = await axios.put(`${baseURL}/api/v2/categories/${id}/state`);
 
     dispatch({
       type: STOP_BUSINESS_CATEGORY_SUCCESS,

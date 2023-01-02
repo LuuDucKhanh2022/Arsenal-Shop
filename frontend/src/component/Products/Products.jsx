@@ -12,6 +12,7 @@ import Pagination from "react-js-pagination";
 import ProductList from "./ProductList";
 import Breadcrumbs from "../../more/Breadcrumbs";
 import "./Products.css";
+import { baseURL } from "../../api/baseURL";
 import styles from "./Products.module.css";
 // import { useAlert } from "react-alert";
 
@@ -147,7 +148,7 @@ const Products = ({ match }) => {
     } else {
       pageStr = `page=${query.get("page")}`;
     }
-    let link = `/api/v2/products?${keyStr}${cateStr}${subCateStr}${perStr}${sortStr}${pageStr}`;
+    let link = `${baseURL}/api/v2/products?${keyStr}${cateStr}${subCateStr}${perStr}${sortStr}${pageStr}`;
 
     dispatch(getProduct(link));
   }, [dispatch, error, param.category, param.subcategory, query]);

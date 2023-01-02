@@ -2,6 +2,7 @@ import {
   ADD_TO_FAVOURITE,
   REMOVE_FROM_FAVOURITE,
 } from "../constans/FavouriteConstans";
+import { baseURL } from "../api/baseURL";
 import axios from "axios";
 import { UPDATE_FAVOURITE_STOCK } from "../constans/CartConstans";
 
@@ -9,7 +10,7 @@ import { UPDATE_FAVOURITE_STOCK } from "../constans/CartConstans";
 export const addToFavourite =
   (id, quantity, selectedSize = "") =>
   async (dispatch, getState) => {
-    const { data } = await axios.get(`/api/v2/products/${id}`);
+    const { data } = await axios.get(`${baseURL}/api/v2/products/${id}`);
 
     dispatch({
       type: ADD_TO_FAVOURITE,
@@ -35,7 +36,7 @@ export const addToFavourite =
 
 export const updateFavouriteStock = (favouriteItems) => async(dispatch,getState) => {
     favouriteItems = favouriteItems.map( async(item) => {
-        const { product } = await axios.get(`/api/v2/products/${item.id}`);
+        const { product } = await axios.get(`${baseURL}/api/v2/products/${item.id}`);
         if(item.sizeList.length > 0 ) {
             item.sizeList = product.size;
         }

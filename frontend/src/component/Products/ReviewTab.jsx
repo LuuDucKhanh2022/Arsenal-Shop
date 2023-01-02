@@ -2,18 +2,16 @@ import React, { useState } from "react";
 import axios from "axios";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
-import { newReview } from "../../actions/ProductActions";
 import { Rating } from "@material-ui/lab";
 import StarIcon from "@material-ui/icons/Star";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addItemsToCart } from "../../actions/CartAction";
 import ReviewCard from "./ReviewCard.jsx";
-import { NEW_REVIEW_RESET } from "../../constans/ProductConstans";
 import ReactPaginate from "react-paginate";
 import Loading from "../../more/Loader";
 import styles from "./ReviewTab.module.css";
 import { useEffect } from "react";
+import { baseURL} from "../../api/baseURL";
 
 function Reviews({ currentReviews }) {
   return (
@@ -41,7 +39,7 @@ const ReviewsTab = ({ product, match, history }) => {
         headers: { "Content-Type": "application/json" },
       };
       const { data } = await axios.post(
-        `/api/v2/product/review`,
+        `${baseURL}/api/v2/product/review`,
         reviewData,
         config
       );
@@ -63,7 +61,6 @@ const ReviewsTab = ({ product, match, history }) => {
     setFilter("all");
   }, [product]);
   const reviewsPerPage = 5;
-  const dispatch = useDispatch();
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [reviewOffset, setReviewOffset] = useState(0);

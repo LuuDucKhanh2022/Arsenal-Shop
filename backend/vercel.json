@@ -1,6 +1,12 @@
 {
   "version": 2,
   "name": "Arsenal-shop",
+  "builds": [
+    {
+      "src":"./index.js",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",

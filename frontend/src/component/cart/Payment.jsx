@@ -11,7 +11,6 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import axios from "axios";
-import "./payment.css";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import EventIcon from "@material-ui/icons/Event";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
@@ -21,6 +20,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "../../more/Loader";
 import Header from "../Home/Header";
+import "./payment.css";
+import { baseURL } from "../../api/baseURL";
 
 const Payment = ({ history }) => {
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -63,7 +64,7 @@ const Payment = ({ history }) => {
         },
       };
       const { data } = await axios.post(
-        "/api/v2/payment/process",
+        `${baseURL}/api/v2/payment/process`,
         paymentData,
         config
       );
