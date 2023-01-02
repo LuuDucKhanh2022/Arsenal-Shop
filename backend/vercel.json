@@ -1,5 +1,6 @@
 {
   "version": 2,
+<<<<<<< HEAD:backend/vercel.json
   "name": "Arsenal-shop",
   "builds": [
     {
@@ -7,6 +8,9 @@
       "use": "@vercel/node"
     }
   ],
+=======
+  "name": "arsenal-shop",
+>>>>>>> 4a6db190e2324cdf64b5d712ac768c235c7c0e0b:vercel.json
   "routes": [
     {
       "src": "/(.*)",
