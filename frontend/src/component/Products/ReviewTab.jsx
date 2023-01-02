@@ -11,7 +11,7 @@ import ReactPaginate from "react-paginate";
 import Loading from "../../more/Loader";
 import styles from "./ReviewTab.module.css";
 import { useEffect } from "react";
-import { baseURL} from "../../api/baseURL";
+import { baseURL } from "../../api/baseURL";
 
 function Reviews({ currentReviews }) {
   return (
@@ -43,7 +43,11 @@ const ReviewsTab = ({ product, match, history }) => {
         reviewData,
         config
       );
-      toast.success(data.message);
+      if(data.success === true) {
+        toast.success(data.message);
+      } else {
+        toast.error(`${data.message}`)
+      }
     } catch (err) {
       let message;
       typeof err.response.data === "string"
@@ -118,16 +122,21 @@ const ReviewsTab = ({ product, match, history }) => {
 
   const reviewSubmitHandler = (e) => {
     e.preventDefault();
+    console.log(rating);
+    if (rating === 0) {
+      toast.error("Please rate the product!");
+    } else {
+      const myForm = new FormData();
 
-    const myForm = new FormData();
+      myForm.set("rating", rating);
+      myForm.set("comment", comment);
+      myForm.set("productId", match.params.id);
 
-    myForm.set("rating", rating);
-    myForm.set("comment", comment);
-    myForm.set("productId", match.params.id);
+      isAuthenticated !== true ? history.push(`/login?redirect=/`) : <></>;
 
-    isAuthenticated !== true ? history.push(`/login?redirect=/`) : <></>;
+      fetchData(myForm);
+    }
 
-    fetchData(myForm);
     // dispatch(newReview(myForm));
 
     // comment.length === 0
@@ -340,6 +349,17 @@ const ReviewsTab = ({ product, match, history }) => {
           Submit
         </button>
       </div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

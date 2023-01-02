@@ -319,9 +319,11 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   // check buy product
   let purchased = false;
   const orders = await Order.find( {user: req.user._id});
-
+  let success = true;
+  let message = "Review done successfully reload for watch it!";
   if(orders.length === 0) {
-    return next(new ErrorHandler(401, "You need to have purchased the product to be able to review it!"));
+    success = false;
+    message = "You need to have purchased the product to be able to review it!";
   } else {
     for( let i = 0; i < orders.length ; i++) {
       if(orders[i].orderItems.find( (orderItem) => orderItem.id === productId) !== undefined) {
@@ -330,7 +332,8 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
       }
     }
     if(purchased === false) {
-      return next(new ErrorHandler(401, "You need to have purchased the product to be able to review it!"));
+      success = false;
+      message = "You need to have purchased the product to be able to review it!";
     }
   }
 
@@ -405,8 +408,8 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   await product.save({ validateBeforeSave: false });
 
   res.status(200).json({
-    success: true,
-    message:"Review done successfully reload for watch it!"
+    success,
+    message
   });
 });
 

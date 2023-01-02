@@ -38,6 +38,7 @@ const ProductDetails = ({ match, history }) => {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+
   const { productCategory, error: productCategoryError } = useSelector(
     (state) => state.productCategory
   );
@@ -69,7 +70,9 @@ const ProductDetails = ({ match, history }) => {
   // };
 
   useEffect(() => {
+
     if (error) {
+      console.log(error);
       toast.error(error);
       dispatch(clearErrors());
     }
@@ -82,7 +85,7 @@ const ProductDetails = ({ match, history }) => {
   }, [dispatch, match.params.id, error, match.path, productCategoryError]);
 
   const options = {
-    value: product.ratings,
+    value: product ? product.ratings : 0,
     readOnly: true,
     precision: 0.5,
   };
@@ -179,178 +182,195 @@ const ProductDetails = ({ match, history }) => {
         <Loading />
       ) : (
         <>
-          <MetaData title={`${product.name}`} />
+          <MetaData title={product ? `${product.name}` : "Product not found"} />
           <Header />
           <Breadcrumbs />
-          <div className={clsx(styles.productDetails)}>
-            <div className={clsx(styles.firstVarse)}>
-              <Carousel>
-                {product.images &&
-                  product.images.map((item, i) => (
-                    <div key={i} className={clsx(styles.carouselImage)}>
-                      <img key={i} src={item.url} alt={`${i} Slide`} />
-                    </div>
-                  ))}
-              </Carousel>
-            </div>
-            <div className={clsx(styles.varse2)}>
-              <div className={clsx(styles.detailsBlock1)}>
-                <h2>{product.name}</h2>
+          {product ? (
+            <>
+            <div className={clsx(styles.productDetails)}>
+              <div className={clsx(styles.firstVarse)}>
+                <Carousel>
+                  {product.images &&
+                    product.images.map((item, i) => (
+                      <div key={i} className={clsx(styles.carouselImage)}>
+                        <img key={i} src={item.url} alt={`${i} Slide`} />
+                      </div>
+                    ))}
+                </Carousel>
               </div>
-              <div className={clsx(styles.detailsBlock2)}>
-                <Rating {...options} />
-                <span>
-                  ({product.numOfReviews && product.numOfReviews.total} Reviews)
+              <div className={clsx(styles.varse2)}>
+                <div className={clsx(styles.detailsBlock1)}>
+                  <h2>{product.name}</h2>
+                </div>
+                <div className={clsx(styles.detailsBlock2)}>
+                  <Rating {...options} />
+                  <span>
+                    ({product.numOfReviews && product.numOfReviews.total}{" "}
+                    Reviews)
+                  </span>
+                </div>
+                <>
+                  {product.size && product.size.length > 0 ? (
+                    <div className={clsx(styles.sizeSection)}>
+                      <div className={clsx(styles.title)}>Choose size</div>
+                      <div className={clsx(styles.list)}>
+                        {product.size.map((sizeItem) => {
+                          let returnElement;
+                          // size.stoke !== 0
+                          //   ? (item = "item")
+                          //   : (item = "item--disable");
+                          // return <div className={item} onClick= {chooseSize}>{size.name}</div>;
+                          sizeItem.stock > 0
+                            ? (returnElement = (
+                                <div
+                                  key={sizeItem.name}
+                                  className={
+                                    sizeItem.name === size
+                                      ? clsx(styles.itemActive)
+                                      : clsx(styles.item)
+                                  }
+                                  onClick={() => chooseSize(sizeItem.name)}
+                                >
+                                  {sizeItem.name}
+                                </div>
+                              ))
+                            : (returnElement = (
+                                <div className={clsx(styles.itemDisable)}>
+                                  {sizeItem.name}
+                                </div>
+                              ));
+                          return returnElement;
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </>
+
+                <div className={clsx(styles.detailsBlock)}>
+                  <div style={{}}>
+                    <h1>
+                      {quantity === 1
+                        ? `$${product.price}`
+                        : `$${product.price} x ${quantity} = $${
+                            product.price * quantity
+                          }`}
+                    </h1>
+                    <h1 className={clsx(styles.discountPrice)}>
+                      {product.offerPrice > 0 ? (
+                        `$${product.offerPrice}`
+                      ) : (
+                        <></>
+                      )}
+                    </h1>
+                  </div>
+                  <div className={clsx(styles.detailsBlock31)}>
+                    <span className={clsx(styles.quantity)}>Quantity</span>
+                    <div className={clsx(styles.detailsBlock311)}>
+                      <button onClick={decreaseQuantity}>-</button>
+                      <input type="number" readOnly value={quantity} />
+                      <button onClick={increaseQuantity}>+</button>
+                    </div>
+                    <span>
+                      {available !== 0
+                        ? `Available : ${available} products`
+                        : `Available : ${product.stock} products`}
+                    </span>
+                    <div></div>
+                  </div>
+                  <div className={clsx(styles.stockMeta)}>
+                    <span
+                      className={
+                        product.stock < 1
+                          ? clsx(styles.outOfStock)
+                          : clsx(styles.inStock)
+                      }
+                    >
+                      {product.stock < 1 ? "Out of stock" : "In Stock"}
+                    </span>
+                  </div>
+
+                  <div className={clsx(styles.action)}>
+                    <div
+                      className={clsx(styles.addToWishList)}
+                      onClick={addToFavouriteHandler}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        className="bi bi-heart"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+                      </svg>
+                      <button className={clsx(styles.wishListBtn)}>
+                        Add to wishlist
+                      </button>
+                    </div>
+
+                    <div
+                      className={
+                        product.stock < 1
+                          ? clsx(styles.addToCart, styles.disable)
+                          : clsx(styles.addToCart)
+                      }
+                      onClick={addToCartHandler}
+                    >
+                      <ShoppingCartIcon />
+                      <span className={clsx(styles.cartBtn)}>
+                        Add to Cart
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* tab */}
+            <div className={clsx(styles.tab)}>
+              <div className={clsx(styles.tabHeading)}>
+                <span
+                  onClick={(e) => changeTab(e, "reviewTab")}
+                  className={clsx(styles.tabTitle, styles.active)}
+                >
+                  Review
+                </span>
+                <span
+                  onClick={(e) => changeTab(e, "descTab")}
+                  className={clsx(styles.tabTitle)}
+                >
+                  Description
                 </span>
               </div>
-              <>
-                {product.size && product.size.length > 0 ? (
-                  <div className={clsx(styles.sizeSection)}>
-                    <div className={clsx(styles.title)}>Choose size</div>
-                    <div className={clsx(styles.list)}>
-                      {product.size.map((sizeItem) => {
-                        let returnElement;
-                        // size.stoke !== 0
-                        //   ? (item = "item")
-                        //   : (item = "item--disable");
-                        // return <div className={item} onClick= {chooseSize}>{size.name}</div>;
-                        sizeItem.stock > 0
-                          ? (returnElement = (
-                              <div
-                                key={sizeItem.name}
-                                className={
-                                  sizeItem.name === size
-                                    ? clsx(styles.itemActive)
-                                    : clsx(styles.item)
-                                }
-                                onClick={() => chooseSize(sizeItem.name)}
-                              >
-                                {sizeItem.name}
-                              </div>
-                            ))
-                          : (returnElement = (
-                              <div className={clsx(styles.itemDisable)}>
-                                {sizeItem.name}
-                              </div>
-                            ));
-                        return returnElement;
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  ""
+
+              <div
+                id="reviewTab"
+                className={clsx(styles.tabContent, styles.active)}
+              >
+                {JSON.stringify(product) !== "{}" && (
+                  <ReviewsTab
+                    product={product}
+                    match={match}
+                    history={history}
+                  />
                 )}
-              </>
-
-              <div className={clsx(styles.detailsBlock)}>
-                <div style={{}}>
-                  <h1>
-                    {quantity === 1
-                      ? `$${product.price}`
-                      : `$${product.price} x ${quantity} = $${
-                          product.price * quantity
-                        }`}
-                  </h1>
-                  <h1 className={clsx(styles.discountPrice)}>
-                    {product.offerPrice > 0 ? `$${product.offerPrice}` : <></>}
-                  </h1>
-                </div>
-                <div className={clsx(styles.detailsBlock31)}>
-                  <span className={clsx(styles.quantity)}>Quantity</span>
-                  <div className={clsx(styles.detailsBlock311)}>
-                    <button onClick={decreaseQuantity}>-</button>
-                    <input type="number" readOnly value={quantity} />
-                    <button onClick={increaseQuantity}>+</button>
-                  </div>
-                  <span>
-                    {available !== 0
-                      ? `Available : ${available} products`
-                      : `Available : ${product.stock} products`}
-                  </span>
-                  <div></div>
-                </div>
-                <div className={clsx(styles.stockMeta)}>
-                  <span
-                    className={
-                      product.stock < 1
-                        ? clsx(styles.outOfStock)
-                        : clsx(styles.inStock)
-                    }
-                  >
-                    {product.stock < 1 ? "Out of stock" : "In Stock"}
-                  </span>
-                </div>
-
-                <div className={clsx(styles.action)}>
-                  <div
-                    className={clsx(styles.addToWishList)}
-                    onClick={addToFavouriteHandler}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      className="bi bi-heart"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
-                    </svg>
-                    <button className={clsx(styles.wishListBtn)}>
-                      Add to wishlist
-                    </button>
-                  </div>
-
-                  <div
-                    className={
-                      product.stock < 1
-                        ? clsx(styles.addToCart, styles.disable)
-                        : clsx(styles.addToCart)
-                    }
-                    onClick={addToCartHandler}
-                  >
-                    <ShoppingCartIcon />
-                    <span className={clsx(styles.cartBtn)}>Add to Cart</span>
-                  </div>
-                </div>
+              </div>
+              <div id="descTab" className={clsx(styles.tabContent)}>
+                <div className={clsx(styles.desc)}>{product.description}</div>
               </div>
             </div>
-          </div>
 
-          {/* tab */}
-          <div className={clsx(styles.tab)}>
-            <div className={clsx(styles.tabHeading)}>
-              <span
-                onClick={(e) => changeTab(e, "reviewTab")}
-                className={clsx(styles.tabTitle, styles.active)}
-              >
-                Review
-              </span>
-              <span
-                onClick={(e) => changeTab(e, "descTab")}
-                className={clsx(styles.tabTitle)}
-              >
-                Description
-              </span>
+            {/* related product */}
+            <div className={clsx(styles.relatedProducts)}>
+              <ProductSection productCategory={relatedProducts} />
             </div>
-
-            <div
-              id="reviewTab"
-              className={clsx(styles.tabContent, styles.active)}
-            >
-              {JSON.stringify(product) !== "{}" && (
-                <ReviewsTab product={product} match={match} history={history} />
-              )}
-            </div>
-            <div id="descTab" className={clsx(styles.tabContent)}>
-              <div className={clsx(styles.desc)}>{product.description}</div>
-            </div>
-          </div>
-
-          {/* related product */}
-          <div className={clsx(styles.relatedProducts)}>
-            <ProductSection productCategory={relatedProducts} />
-          </div>
+          </>
+          ) : (
+            <p>No product found</p>
+          )}
 
           <ToastContainer
             position="bottom-center"
