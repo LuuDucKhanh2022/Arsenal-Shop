@@ -369,8 +369,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
             product.numOfReviews.twoStar -=1;
             break;
           case 1:
-            product.numOfReviews.oneStar -=1;
-              
+            product.numOfReviews.oneStar -=1;       
         }
         (rev.rating = rating), (rev.comment = comment);
       }
