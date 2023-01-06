@@ -316,6 +316,8 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
 // Create New Review or Update the review
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, productId } = req.body;
+  console.log("cookie",req.cookies);
+  console.log("dcm")
   // check buy product
   let purchased = false;
   const orders = await Order.find( {user: req.user._id});

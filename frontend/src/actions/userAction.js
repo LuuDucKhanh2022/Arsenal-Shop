@@ -45,14 +45,13 @@ export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json",'Access-Control-Allow-Origin' : '*' },withCredentials:true };
+    const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
       `${baseURL}/api/v2/login`,
       { email, password },
       config
     );
-    console.log(data.token);
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
 
   } catch (error) {
@@ -99,7 +98,7 @@ export const loadUser = () => async (dispatch) => {
     dispatch({ type: LOAD_USER_REQUEST });
     // eslint-disable-next-line
     // const config = { headers: { "Content-Type": "application/json" } };
-    const config = { headers: { "Content-Type": "application/json" },withCredentials: true };
+    const config = { headers: { "Content-Type": "application/json" } };
 
 
     const { data } = await axios.get(`${baseURL}/api/v2/me`,config);

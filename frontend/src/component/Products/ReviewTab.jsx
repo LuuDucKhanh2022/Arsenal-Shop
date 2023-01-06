@@ -43,10 +43,10 @@ const ReviewsTab = ({ product, match, history }) => {
         reviewData,
         config
       );
-      if(data.success === true) {
+      if (data.success === true) {
         toast.success(data.message);
       } else {
-        toast.error(`${data.message}`)
+        toast.error(`${data.message}`);
       }
     } catch (err) {
       let message;
