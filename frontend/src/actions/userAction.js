@@ -53,7 +53,6 @@ export const login = (email, password) => async (dispatch) => {
       config
     );
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
-
   } catch (error) {
     let message;
     typeof error.response.data === "string"
@@ -74,7 +73,11 @@ export const register = (userData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.post(`${baseURL}/api/v2/registration`, userData, config);
+    const { data } = await axios.post(
+      `${baseURL}/api/v2/registration`,
+      userData,
+      config
+    );
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -99,9 +102,8 @@ export const loadUser = () => async (dispatch) => {
     // eslint-disable-next-line
     // const config = { headers: { "Content-Type": "application/json" } };
     const config = { headers: { "Content-Type": "application/json" } };
-
-
-    const { data } = await axios.get(`${baseURL}/api/v2/me`,config);
+    const { data } = await axios.get(`${baseURL}/api/v2/me`, config);
+    console.log(data)
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -119,7 +121,7 @@ export const loadUser = () => async (dispatch) => {
 // Log out user
 export const logout = () => async (dispatch) => {
   try {
-    dispatch({ type:LOGOUT_REQUEST })
+    dispatch({ type: LOGOUT_REQUEST });
     await axios.get(`${baseURL}/api/v2/logout`);
 
     dispatch({ type: LOGOUT_SUCCESS });
@@ -142,7 +144,11 @@ export const updateProfile = (userData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.put(`${baseURL}/api/v2/me/profile`, userData, config);
+    const { data } = await axios.put(
+      `${baseURL}/api/v2/me/profile`,
+      userData,
+      config
+    );
 
     dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
   } catch (error) {
@@ -167,7 +173,11 @@ export const updatePassword = (password) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.put(`${baseURL}/api/v2/me/password`, password, config);
+    const { data } = await axios.put(
+      `${baseURL}/api/v2/me/password`,
+      password,
+      config
+    );
 
     dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success });
   } catch (error) {
@@ -211,7 +221,11 @@ export const forgotPassword = (email) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(`${baseURL}/api/v2/password/forgot`, email, config);
+    const { data } = await axios.post(
+      `${baseURL}/api/v2/password/forgot`,
+      email,
+      config
+    );
 
     dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
   } catch (error) {
@@ -317,12 +331,12 @@ export function updateUser(id, userData) {
       dispatch({ type: UPDATE_USER_SUCCESS, payload: data.success });
     } catch (error) {
       let message;
-    typeof error.response.data === "string"
-      ? (message = error.response.data.slice(
-          error.response.data.lastIndexOf("Error") + 6,
-          error.response.data.indexOf("<br>")
-        ))
-      : (message = error.response.data.message);
+      typeof error.response.data === "string"
+        ? (message = error.response.data.slice(
+            error.response.data.lastIndexOf("Error") + 6,
+            error.response.data.indexOf("<br>")
+          ))
+        : (message = error.response.data.message);
       dispatch({
         type: UPDATE_USER_FAIL,
         payload: message,
