@@ -45,7 +45,7 @@ export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" },withCredentials: true };
+    const config = { headers: { "Content-Type": "application/json",'Access-Control-Allow-Origin' : '*' },withCredentials:true };
 
     const { data } = await axios.post(
       `${baseURL}/api/v2/login`,
@@ -98,9 +98,11 @@ export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
     // eslint-disable-next-line
-    const config = { headers: { "Content-Type": "application/json" } };
+    // const config = { headers: { "Content-Type": "application/json" } };
+    const config = { headers: { "Content-Type": "application/json" },withCredentials: true };
 
-    const { data } = await axios.get(`${baseURL}/api/v2/me`);
+
+    const { data } = await axios.get(`${baseURL}/api/v2/me`,config);
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {

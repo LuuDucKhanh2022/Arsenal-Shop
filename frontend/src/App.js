@@ -67,7 +67,9 @@ function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
-    const { data } = await axios.get(`${baseURL}/api/v2/stripeapikey`);
+    const config = { headers: { "Content-Type": "application/json" },withCredentials: true };
+
+    const { data } = await axios.get(`${baseURL}/api/v2/stripeapikey`,config);
 
     setStripeApiKey(data.stripeApiKey);
   }
