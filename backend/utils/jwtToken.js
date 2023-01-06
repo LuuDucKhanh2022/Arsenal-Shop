@@ -10,7 +10,9 @@ const sendToken = (user,statusCode,res) =>{
         //    24 * 60 * 60 * 1000 = 24 hour
        ),
        httpOnly: false,
-       domain: "vercel.app"
+       domain: "vercel.app",
+       secure: true,
+       sameSite:'none'
    };
 
    res.status(statusCode).cookie("token",token,options).json({
