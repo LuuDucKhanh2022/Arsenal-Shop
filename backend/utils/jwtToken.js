@@ -9,7 +9,8 @@ const sendToken = (user,statusCode,res) =>{
            Date.now() + process.env.COOKIE_EXPIRE * (24 * 60 * 60 * 1000) 
         //    24 * 60 * 60 * 1000 = 24 hour
        ),
-       httpOnly: false
+       httpOnly: true,
+       domain: "arsenal-shop.vercel.app"
    };
 
    res.status(statusCode).cookie("token",token,options).json({
