@@ -11,22 +11,31 @@ const path = require("path");
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use(cors());
-app.use(cors(
-  {
-    origin: 'http://localhost:3000',
+app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
     credentials: true,
-  }
-));
-app.use(function(req, res, next) {
-  res.header('Content-Type', 'application/json;charset=UTF-8')
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next()
-})
+    exposedHeaders: ["Set-Cookie", "Date", "ETag"],
+  })
+);
+
+// app.use(cors(
+//   {
+//     origin: 'http://localhost:3000',
+//     credentials: true,
+//   }
+// ));
+// app.use(function(req, res, next) {
+//   res.header('Content-Type', 'application/json;charset=UTF-8')
+//   res.header('Access-Control-Allow-Credentials', true)
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   )
+//   next()
+// })
 
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(fileUpload());
@@ -39,7 +48,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 //Route import
-const category =  require("./routes/CategoryRoute");
+const category = require("./routes/CategoryRoute");
 const subCategory = require("./routes/SubCategoryRoute");
 const product = require("./routes/ProductRoute");
 const user = require("./routes/UserRoute");

@@ -52,6 +52,7 @@ export const login = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
+    console.log(data.token);
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
 
   } catch (error) {
